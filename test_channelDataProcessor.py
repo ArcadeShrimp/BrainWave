@@ -4,20 +4,28 @@ from process_data import ChannelDataProcessor, Metrics
 import numpy as np
 
 
-# @skip("Test not implemented")
 class TestChannelDataProcessor(TestCase):
+    """
+        TODO: implement
+    """
+
+    @skip("Test not implemented")
     def test_feed_new_data(self):
         self.fail()
 
+    @skip("Test not implemented")
     def test__setup_buffers(self):
         self.fail()
 
+    @skip("Test not implemented")
     def test__retrieve_channel_data(self):
         self.fail()
 
+    @skip("Test not implemented")
     def test__get_data_epoch(self):
         self.fail()
 
+    @skip("Test not implemented")
     def test_get_channel_smooth_band_powers(self):
         self.fail()
 
