@@ -8,10 +8,10 @@ To run, make sure you have PsychoPy dependencies installed https://www.psychopy.
 Workflow: 
   1) Introduction *click*
   2) Instructions *click*
-  3) Loop (3 times, each with a random landscape and Waldo image) 
-      3a) Relax cue
-      3b) Relax 10s w/ Landscape image
-      3c) Focus cue (Where's Waldo picture) 
-      3d) Focus 7s w/ Where's Waldo image
+  3) Loop (3 times, each with a random landscape and Waldo image) <br>
+      3a) Relax cue <br>
+      3b) Relax 10s w/ Landscape image <br>
+      3c) Focus cue (Where's Waldo picture) <br>
+      3d) Focus 7s w/ Where's Waldo image <br>
   
   
