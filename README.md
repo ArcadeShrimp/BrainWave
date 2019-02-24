@@ -9,9 +9,9 @@ Workflow:
   1) Introduction *click*
   2) Instructions *click*
   3) Loop (3 times, each with a random landscape and Waldo image) <br>
-      3a) Relax cue <br>
+      3a) Relax cue 1s <br>
       3b) Relax 10s w/ Landscape image <br>
-      3c) Focus cue (Where's Waldo picture) <br>
+      3c) Focus cue 1s <br>
       3d) Focus 7s w/ Where's Waldo image <br>
   
   
