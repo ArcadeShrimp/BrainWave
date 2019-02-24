@@ -93,7 +93,7 @@ def compute_band_powers(eegdata, fs):
     ind_beta, = np.where((f >= 12) & (f < 30))
     meanBeta = np.mean(PSD[ind_beta, :], axis=0)
 
-    print(meanDelta)
+#     print(meanDelta)
     feature_vector = np.concatenate((meanDelta, meanTheta, meanAlpha,
                                      meanBeta), axis=0)
 
@@ -165,8 +165,8 @@ def update_buffer(data_buffer, new_data, notch=False, filter_state=None):
             
   #      new_data, filter_state = lfilter(NOTCH_B, NOTCH_A, new_data, axis=0, zi=filter_state)
 
-    print(new_data.shape)
-    print(data_buffer.shape)
+#     print(new_data.shape)
+#     print(data_buffer.shape)
     
     new_buffer = np.concatenate((data_buffer, new_data), axis=0)
     new_buffer = new_buffer[new_data.shape[0]:, :]
