@@ -24,6 +24,21 @@ OVERLAP_LENGTH = 0.8
 SHIFT_LENGTH = EPOCH_LENGTH - OVERLAP_LENGTH
 
 
+class DataRecord:
+    def __init__(self):
+        self.deltas = []
+        self.thetas = []
+        self.alphas = []
+        self.betas = []
+
+    def get_average_power(self, metric_str="alpha"):
+        """
+
+        :return: a list of average alpha powers for each channel
+        """
+        pass
+
+
 class Band:
     Delta = 0
     Theta = 1
@@ -51,7 +66,14 @@ class Tracker:
         pass
 
     @staticmethod
-    def _record(info, inlet):
+    def _record(info, inlet, d: DataRecord):
+        """
+
+        :param info:
+        :param inlet:
+        :param d: DataRecord object
+        :return:
+        """
 
         def get_fs(_info):
             return int(_info.nominal_srate())
@@ -70,10 +92,7 @@ class Tracker:
         # The try/except structure allows to quit the while loop by aborting the
         # script with <Ctrl-C>
         print('Press Ctrl-C in the console to break the while loop.')
-        deltas = []
-        thetas = []
-        alphas = []
-        betas = []
+
         try:
             # The following loop acquires data, computes band powers, and calculates neurofeedback metrics based on those band powers
             while True:
@@ -112,10 +131,10 @@ class Tracker:
 
                 # print("alpha metric for 4 sensors are separately: {}".format(metrics))
                 print(" ")
-                deltas.append(delta_sample)
-                thetas.append(theta_sample)
-                alphas.append(alpha_sample)
-                betas.append(beta_sample)
+                d.deltas.append(delta_sample)
+                d.thetas.append(theta_sample)
+                d.alphas.append(alpha_sample)
+                d.betas.append(beta_sample)
 
         except KeyboardInterrupt:
             print('Closing!')
