@@ -186,9 +186,8 @@ class Tracker:
 
         data_record = DataRecord()
         self.data_records[(mode, stage)] = data_record
-        self._start_recording(data_record)
 
-        if (self.recordingProcess == None or ~self.recordingProcess.is_alive()):
+        if self.recordingProcess == None or ~self.recordingProcess.is_alive():
             self.isRecording = True
 
             self.recordingProcess = Process(target=self._record, args=(self.info, self.inlet, data_record,))
