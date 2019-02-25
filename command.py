@@ -35,13 +35,21 @@ class DataRecord:
         self.thetas = []
         self.alphas = []
         self.betas = []
+        
+        self.avg_deltas = 0
+        self.avg_thetas = 0
+        self.avg_alphas = 0
+        self.avg_betas = 0
 
-    def get_average_power(self, metric_str="alpha"):
+    def get_average_powers(self):
         """
 
-        :return: a list of average alpha powers for each channel
+        :return: a list of average powers for each channel
         """
-        pass
+        self.avg_deltas = np.mean(self.deltas)
+        self.avg_thetas = np.mean(self.thetas)
+        self.avg_alphas = np.mean(self.alphas)
+        self.avg_betas = np.mean(self.betas)
 
 
 class Band:
