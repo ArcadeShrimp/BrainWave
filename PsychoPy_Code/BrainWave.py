@@ -19,6 +19,11 @@ from numpy.random import random, randint, normal, shuffle
 import os  # handy system and path functions
 import sys  # to get file system encoding
 
+# constants
+RELAX = 'relax'
+FOCUS = 'focus'
+
+
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
@@ -52,9 +57,6 @@ logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a f
 
 ### ESC flag ###
 endExpNow = False  # flag for 'escape' or other condition => quit the exp
-
-
-
 
 ####################
 ### Window Setup ###
@@ -270,14 +272,16 @@ if thisTrial != None:
     for paramName in thisTrial:
         exec('{} = thisTrial[paramName]'.format(paramName))
 
+trialCounter = 0
 for thisTrial in trials:
+    trialCounter += 1
     currentLoop = trials
     # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
     if thisTrial != None:
         for paramName in thisTrial:
             exec('{} = thisTrial[paramName]'.format(paramName))
     
-
+    print("This trial " + str(thisTrial))
 
     #########################
     #########################
@@ -427,3 +431,4 @@ logging.flush()
 thisExp.abort()  # or data files will save again on exit
 win.close()
 core.quit()
+
