@@ -69,15 +69,17 @@ class Tracker:
     recordingProcess = None
 
     # to hold the eeg data
-    eeg_data = {('relax',1) : list(), "relax2": list(), "relax3": list(), "focus1": list(), "focus2": list(), "focus3": list()}
+    # eeg_data = {('relax',1) : list(), "relax2": list(), "relax3": list(), "focus1": list(), "focus2": list(), "focus3": list()}
     mydata = list()
-    def __init__(self):#, inlet):
+
+    def __init__(self, inlet, info):
         """
         Initialize with inlet.
         :param inlet:
         """
         self.inlet = inlet
-        self.data_records = None
+        self.info = info
+        self.data_records = dict()
 
     def _start_recording(self, arr):
         """ Write smooth band power to the df
@@ -174,34 +176,29 @@ class Tracker:
         :return:
         """
 
+        data_record = DataRecord()
+        self.data_records[(mode, stage)] = data_record
+        self._start_recording(data_record)
+
         if (self.recordingProcess == None or ~self.recordingProcess.is_alive()) :
             self.isRecording = True
 
-            self.recordingProcess = Process(target=self._start_recording, args=(self.eeg_data[mode + str(stage)],))
+            self.recordingProcess = Process(target=self._record, args=(self.info, self.inlet, data_record, ))
 
             self.currentMode = mode
             self.currentStage = stage
 
             self.recordingProcess.start()
-        else :
+        else:
             print("Unable to start process because already running")
 
-
-        pass
-
     def end_stage(self, mode=None, stage=0):
+
         self.recordingProcess.terminate()
         self.currentMode = None
         self.currentStage = None
 
-        data_record = DataRecord()
-        self.data_records[(mode, stage)] = data_record
-        self._start_recording(data_record)
+        data_record: DataRecord = self.data_records[(mode, stage)]
 
     def update_stage_threshold(self, mode=None):
         pass
-
-    def end_stage(self, mode=None, stage=0):
-        data_record: DataRecord = self.data_records[(mode, stage)]
-
-
