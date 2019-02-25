@@ -207,6 +207,7 @@ class Tracker:
         self.currentStage = None
 
         data_record: DataRecord = self.data_records[(mode, stage)]
+        print("average powers: {}".format(data_record.get_average_powers()))
 
     def update_stage_threshold(self, mode=None):
         pass
