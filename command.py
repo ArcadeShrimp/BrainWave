@@ -1,4 +1,3 @@
-
 from multiprocessing import Process
 import time
 
@@ -35,7 +34,7 @@ class DataRecord:
         self.thetas = []
         self.alphas = []
         self.betas = []
-        
+
         self.avg_deltas = 0
         self.avg_thetas = 0
         self.avg_alphas = 0
@@ -50,6 +49,7 @@ class DataRecord:
         self.avg_thetas = np.mean(self.thetas)
         self.avg_alphas = np.mean(self.alphas)
         self.avg_betas = np.mean(self.betas)
+
 
 class Band:
     Delta = 0
@@ -89,7 +89,6 @@ class Tracker:
         self.data_records = dict()
         self.threshold = None
 
-
     def _start_recording(self, arr):
         """ Write smooth band power to the df
 
@@ -98,7 +97,7 @@ class Tracker:
         # Initialize museLSL
 
         # While loop for recording
-        while(self.readyToRecord) :
+        while (self.readyToRecord):
             print("recording: " + self.currentMode + " " + str(self.currentStage))
             time.sleep(1)
 
@@ -189,10 +188,10 @@ class Tracker:
         self.data_records[(mode, stage)] = data_record
         self._start_recording(data_record)
 
-        if (self.recordingProcess == None or ~self.recordingProcess.is_alive()) :
+        if (self.recordingProcess == None or ~self.recordingProcess.is_alive()):
             self.isRecording = True
 
-            self.recordingProcess = Process(target=self._record, args=(self.info, self.inlet, data_record, ))
+            self.recordingProcess = Process(target=self._record, args=(self.info, self.inlet, data_record,))
 
             self.currentMode = mode
             self.currentStage = stage
@@ -211,13 +210,13 @@ class Tracker:
         data_record.get_average_powers()
         print("average powers: {}".format(vars(data_record)))
 
-    def update_stage_threshold(self, mode=None):
-        pass
+    def update_stage_threshold(self):
+        self.threshold = self.get_threshold()
 
     def get_threshold(self):
         """
 
-        :return: the threshold
+        :return: the threshold determined as the average between relax_theta and focus_theta
         """
         relax_datas = [self.data_records[key] for key in self.data_records if key[0] == 'relax']
         relax_thetas = [data_record.avg_thetas for data_record in relax_datas]
