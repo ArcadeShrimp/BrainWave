@@ -51,7 +51,6 @@ class DataRecord:
         self.avg_alphas = np.mean(self.alphas)
         self.avg_betas = np.mean(self.betas)
 
-
 class Band:
     Delta = 0
     Theta = 1
@@ -88,6 +87,8 @@ class Tracker:
         self.inlet = inlet
         self.info = info
         self.data_records = dict()
+        self.threshold = None
+
 
     def _start_recording(self, arr):
         """ Write smooth band power to the df
@@ -207,7 +208,23 @@ class Tracker:
         self.currentStage = None
 
         data_record: DataRecord = self.data_records[(mode, stage)]
-        print("average powers: {}".format(data_record.get_average_powers()))
+        data_record.get_average_powers()
+        print("average powers: {}".format(vars(data_record)))
 
     def update_stage_threshold(self, mode=None):
         pass
+
+    def get_threshold(self):
+        """
+
+        :return: the threshold
+        """
+        relax_datas = [self.data_records[key] for key in self.data_records if key[0] == 'relax']
+        relax_thetas = [data_record.avg_thetas for data_record in relax_datas]
+        relax_theta = np.mean(relax_thetas)
+
+        focus_datas = [self.data_records[key] for key in self.data_records if key[0] == 'focus']
+        focus_thetas = [data_record.avg_thetas for data_record in focus_datas]
+        focus_theta = np.mean(focus_thetas)
+
+        return np.mean([relax_theta, focus_theta])
