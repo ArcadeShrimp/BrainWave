@@ -19,6 +19,11 @@ from numpy.random import random, randint, normal, shuffle
 import os  # handy system and path functions
 import sys  # to get file system encoding
 
+sys.path.append('../')
+
+import command 
+cmd = command.Tracker()
+
 # constants
 RELAX = 'relax'
 FOCUS = 'focus'
@@ -281,7 +286,6 @@ for thisTrial in trials:
         for paramName in thisTrial:
             exec('{} = thisTrial[paramName]'.format(paramName))
     
-    print("This trial " + str(thisTrial))
 
     #########################
     #########################
@@ -334,6 +338,8 @@ for thisTrial in trials:
         if hasattr(thisComponent, 'status'):
             thisComponent.status = NOT_STARTED
     
+
+    cmd.start_stage(mode=RELAX, stage=trialCounter)
     routineTimer.add(10.000000)
     continueRoutine = True
     # -------Start Routine "relax"-------
@@ -350,6 +356,7 @@ for thisTrial in trials:
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()
 
+    cmd.end_stage(mode=RELAX, stage=trialCounter)
     # -------Ending Routine "relax"-------
     for thisComponent in relaxComponents:
         if hasattr(thisComponent, "setAutoDraw"):
@@ -405,6 +412,7 @@ for thisTrial in trials:
         if hasattr(thisComponent, 'status'):
             thisComponent.status = NOT_STARTED
     
+    cmd.start_stage(mode=FOCUS, stage=trialCounter)
     routineTimer.add(7.000000)
     continueRoutine = True
     # -------Start Routine "focus"-------
@@ -421,6 +429,7 @@ for thisTrial in trials:
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()
 
+    cmd.end_stage(mode=FOCUS, stage=trialCounter)
     # -------Ending Routine "focus"-------
     for thisComponent in focusComponents:
         if hasattr(thisComponent, "setAutoDraw"):
