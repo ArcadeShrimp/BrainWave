@@ -183,8 +183,8 @@ class ChannelDataProcessor:
         band_buffer, _ = utils.update_buffer(band_buffer,
                                              np.asarray([band_powers]))
 
-        print('Delta: ', band_powers[self.band_cls.Delta], ' Theta: ', band_powers[self.band_cls.Theta],
-              ' Alpha: ', band_powers[self.band_cls.Alpha], ' Beta: ', band_powers[self.band_cls.Beta])
+       # print('Delta: ', band_powers[self.band_cls.Delta], ' Theta: ', band_powers[self.band_cls.Theta],
+        #      ' Alpha: ', band_powers[self.band_cls.Alpha], ' Beta: ', band_powers[self.band_cls.Beta])
 
         smooth_band_powers = _get_smooth_band_powers(band_buffer)
 
