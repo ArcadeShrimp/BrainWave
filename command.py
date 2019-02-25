@@ -25,6 +25,7 @@ SHIFT_LENGTH = EPOCH_LENGTH - OVERLAP_LENGTH
 
 
 class DataRecord:
+
     def __init__(self):
         self.deltas = []
         self.thetas = []
@@ -57,6 +58,7 @@ class Tracker:
         :param inlet:
         """
         self.inlet = inlet
+        self.data_records = None
 
     def _start_recording(self, arr):
         """ Write smooth band power to the df
@@ -145,5 +147,14 @@ class Tracker:
 
         :return:
         """
+        data_record = DataRecord()
+        self.data_records[(mode, stage)] = data_record
+        self._start_recording(data_record)
+
+    def update_stage_threshold(self, mode=None):
         pass
+
+    def end_stage(self, mode=None, stage=0):
+        data_record: DataRecord = self.data_records[(mode, stage)]
+
 
