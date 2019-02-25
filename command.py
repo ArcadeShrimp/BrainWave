@@ -63,45 +63,46 @@ class Tracker:
     Tracks PsychoPy Calibration and MuseLsL Data
     """
 
-    currentMode = None
-    currentStage = None
-
-    # Whether or not we are ready to record
-    readyToRecord = True
-
-    # Keep track of whether something is already recording
-    isRecording = False
-
-    # to hold the process that will do the recording
-    recordingProcess = None
-
     # to hold the eeg data
     # eeg_data = {('relax',1) : list(), "relax2": list(), "relax3": list(), "focus1": list(), "focus2": list(), "focus3": list()}
-    mydata = list()
+    # mydata = list()
 
     def __init__(self, inlet, info):
         """
         Initialize with inlet.
         :param inlet:
         """
+
+        self.currentMode = None
+        self.currentStage = None
+
+        # Whether or not we are ready to record
+        self.readyToRecord = True
+
+        # Keep track of whether something is already recording
+        self.isRecording = False
+
+        # to hold the process that will do the recording
+        self.recordingProcess = None
+
         self.inlet = inlet
         self.info = info
         self.data_records = dict()
         self.threshold = None
 
-    def _start_recording(self, arr):
-        """ Write smooth band power to the df
-
-        :return:
-        """
-        # Initialize museLSL
-
-        # While loop for recording
-        while (self.readyToRecord):
-            print("recording: " + self.currentMode + " " + str(self.currentStage))
-            time.sleep(1)
-
-        pass
+    # def _start_recording(self, arr):
+    #     """ Write smooth band power to the df
+    #
+    #     :return:
+    #     """
+    #     # Initialize museLSL
+    #
+    #     # While loop for recording
+    #     while (self.readyToRecord):
+    #         print("recording: " + self.currentMode + " " + str(self.currentStage))
+    #         time.sleep(1)
+    #
+    #     pass
 
     @staticmethod
     def _record(info, inlet, d: DataRecord):
