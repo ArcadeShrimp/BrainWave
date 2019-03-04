@@ -311,6 +311,7 @@ for thisTrial in trials:
 
         # check for quit (typically the Esc key)
         if endExpNow or event.getKeys(keyList=["escape"]):
+            win.close()
             core.quit()
 
         # refresh the screen
@@ -331,7 +332,7 @@ for thisTrial in trials:
 
     # ------Prepare to start Routine "relax"-------
 
-    relaxing_image.setImage(relaxing_images)
+    relaxing_image.setImage('landscape1.jpg')#relaxing_images)
 
     relaxComponents = [relaxing_image]
     for thisComponent in relaxComponents:
@@ -350,6 +351,8 @@ for thisTrial in trials:
         
         # check for quit (typically the Esc key)
         if endExpNow or event.getKeys(keyList=["escape"]):
+            cmd.end_stage(mode=RELAX, stage=trialCounter)
+            win.close()
             core.quit()
 
         # refresh the screen
@@ -386,6 +389,7 @@ for thisTrial in trials:
 
         # check for quit (typically the Esc key)
         if endExpNow or event.getKeys(keyList=["escape"]):
+            win.close()
             core.quit()
 
         # refresh the screen
@@ -423,6 +427,8 @@ for thisTrial in trials:
         
         # check for quit (typically the Esc key)
         if endExpNow or event.getKeys(keyList=["escape"]):
+            cmd.end_stage(mode=FOCUS, stage=trialCounter)
+            win.close()
             core.quit()
 
         # refresh the screen
