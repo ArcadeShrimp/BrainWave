@@ -29,6 +29,16 @@ SHIFT_LENGTH = EPOCH_LENGTH - OVERLAP_LENGTH
 
 mock_arr = list()
 
+
+class MetricStats:
+
+    def __init__(self, avg_deltas=0, avg_thetas=0, avg_alphas=0, avg_betas=0):
+        self.avg_deltas = avg_deltas
+        self.avg_thetas = avg_thetas
+        self.avg_alphas = avg_alphas
+        self.avg_betas = avg_betas
+
+
 class DataRecord:
 
     def __init__(self):
@@ -37,20 +47,21 @@ class DataRecord:
         self.alphas = []
         self.betas = []
 
-        self.avg_deltas = 0
-        self.avg_thetas = 0
-        self.avg_alphas = 0
-        self.avg_betas = 0
-
-    def get_average_powers(self):
+    def get_metrics(self, channel_index):
         """
 
         :return: a list of average powers for each channel
         """
-        self.avg_deltas = np.mean(self.deltas)
-        self.avg_thetas = np.mean(self.thetas)
-        self.avg_alphas = np.mean(self.alphas)
-        self.avg_betas = np.mean(self.betas)
+
+        deltas = [l[channel_index] for l in self.deltas]
+        thetas = [l[channel_index] for l in self.thetas]
+        alphas = [l[channel_index] for l in self.alphas]
+        betas = [l[channel_index] for l in self.betas]
+
+        return MetricStats(avg_deltas=np.mean(deltas),
+                           avg_thetas=np.mean(thetas),
+                           avg_alphas=np.mean(alphas),
+                           avg_betas=np.mean(betas))
 
 
 class Band:
@@ -69,7 +80,7 @@ class Tracker:
     # eeg_data = {('relax',1) : list(), "relax2": list(), "relax3": list(), "focus1": list(), "focus2": list(), "focus3": list()}
     # mydata = list()
     
-    def __init__(self, inlet, info):
+    def __init__(self, inlet, info, channel_index):
         """
         Initialize with inlet.
         :param inlet:
@@ -92,6 +103,7 @@ class Tracker:
         self.info = info
         self.data_records = dict()
         self.threshold = None
+        self.channelIndex = channel_index
 
         
     def _record(self, info, inlet, d: DataRecord):
@@ -139,6 +151,7 @@ class Tracker:
 
                 c.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
                 metrics = np.zeros(NUM_CHANNELS)
+
                 delta_sample = []
                 theta_sample = []
                 alpha_sample = []
@@ -203,8 +216,8 @@ class Tracker:
         self.currentStage = None
 
         data_record: DataRecord = self.data_records[(mode, stage)]
-        data_record.get_average_powers()
-        print("average theta: {}".format(data_record.avg_thetas))
+        m: MetricStats = data_record.get_metrics(channel_index=self.channelIndex)
+        print("average theta: {}".format(m.avg_thetas))
 
     def update_stage_threshold(self):
         self.threshold = self.get_threshold()
