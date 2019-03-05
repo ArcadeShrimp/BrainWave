@@ -239,6 +239,87 @@ class Tracker:
             except KeyboardInterrupt:
                 print('Closing!')
 
+    def _start_recording_2(self):
+        """ Write smooth band power to the df
+
+        :return:
+        """
+
+        inlet = self.inlet
+        info = self.info
+
+        d = self.data_records[(self.currentMode, self.currentStage)]
+
+        # Initialize museLSL
+        # While loop for recording
+        while (self.readyToRecord):
+            print("recording: " + self.currentMode + " " + str(self.currentStage))
+
+            # time.sleep(1)
+            def get_fs(_info):
+                return int(_info.nominal_srate())
+
+            fs = get_fs(info)
+
+            def _acquire_eeg_data(_inlet):
+                """ Pull EEG data from inlet and return.
+
+                :return: tuple: _eeg_data, _timestamp
+                """
+                _eeg_data, _timestamp = _inlet.pull_chunk(
+                    timeout=1, max_samples=int(SHIFT_LENGTH * fs))
+                return _eeg_data, _timestamp
+
+            # The try/except structure allows to quit the while loop by aborting the
+            # script with <Ctrl-C>
+            print('Press Ctrl-C in the console to break the while loop.')
+
+            try:
+                # The following loop acquires data, computes band powers, and calculates neurofeedback metrics based on those band powers
+                while True:
+                    #
+                    """ 3.1 ACQUIRE DATA """
+
+                    # Obtain EEG data from the LSL stream
+                    eeg_data, timestamp = _acquire_eeg_data(inlet)
+                    #             eeg_data, timestamp = _acquire_eeg_data_mock()
+
+                    c = ChannelDataProcessor(buffer_length=BUFFER_LENGTH,
+                                             epoch_length=EPOCH_LENGTH,
+                                             overlap_length=OVERLAP_LENGTH,
+                                             shift_length=SHIFT_LENGTH, fs=fs, band_cls=Band)
+
+                    c.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
+                    metrics = np.zeros(NUM_CHANNELS)
+                    delta_sample = []
+                    theta_sample = []
+                    alpha_sample = []
+                    beta_sample = []
+                    for i in range(NUM_CHANNELS):  # Iterate through all separate channels
+
+                        # Record channel smooth band power
+                        csbp = c.get_channel_smooth_band_powers(i)
+                        delta_sample.append(csbp[0])
+                        theta_sample.append(csbp[1])
+                        alpha_sample.append(csbp[2])
+                        beta_sample.append(csbp[3])
+
+                        # Run calculations on csbp to obtain desired metrics
+                        beta_metric = Metrics.beta_protocol(csbp, Band)
+                        # print("Alpha metric: {}".format(alpha_metric))
+
+                        metrics[i] = beta_metric
+
+                    # print("alpha metric for 4 sensors are separately: {}".format(metrics))
+                    print(" ")
+                    d.deltas.append(delta_sample)
+                    d.thetas.append(theta_sample)
+                    d.alphas.append(alpha_sample)
+                    d.betas.append(beta_sample)
+
+            except KeyboardInterrupt:
+                print('Closing!')
+
     def start_stage(self, mode=None, stage=0):
         """
             Start relax stage and record data.
@@ -254,7 +335,8 @@ class Tracker:
 
 #             self.recordingProcess = Process(target=_record, args=(self.info, self.inlet, data_record,))
 #             arr = mock_arr
-            self.recordingProcess = Process(target=self._start_recording, args=(self.inlet, self.info, data_record, ))
+#             self.recordingProcess = Process(target=self._start_recording, args=(self.inlet, self.info, data_record, ))
+            self.recordingProcess = Process(target=self._start_recording_2)
 
             self.currentMode = mode
             self.currentStage = stage
