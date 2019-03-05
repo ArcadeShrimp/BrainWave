@@ -1,4 +1,5 @@
 from multiprocessing import Process
+import threading 
 import time
 
 from muselsl import *
@@ -26,6 +27,7 @@ OVERLAP_LENGTH = 0.8
 # Amount to 'shift' the start of each next consecutive epoch
 SHIFT_LENGTH = EPOCH_LENGTH - OVERLAP_LENGTH
 
+mock_arr = list()
 
 class DataRecord:
 
@@ -56,7 +58,7 @@ class Band:
     Theta = 1
     Alpha = 2
     Beta = 3
-
+    
 
 class Tracker:
     """
@@ -66,13 +68,14 @@ class Tracker:
     # to hold the eeg data
     # eeg_data = {('relax',1) : list(), "relax2": list(), "relax3": list(), "focus1": list(), "focus2": list(), "focus3": list()}
     # mydata = list()
-
+    
     def __init__(self, inlet, info):
         """
         Initialize with inlet.
         :param inlet:
         """
 
+        self.keepRecording = False
         self.currentMode = None
         self.currentStage = None
 
@@ -90,22 +93,8 @@ class Tracker:
         self.data_records = dict()
         self.threshold = None
 
-    # def _start_recording(self, arr):
-    #     """ Write smooth band power to the df
-    #
-    #     :return:
-    #     """
-    #     # Initialize museLSL
-    #
-    #     # While loop for recording
-    #     while (self.readyToRecord):
-    #         print("recording: " + self.currentMode + " " + str(self.currentStage))
-    #         time.sleep(1)
-    #
-    #     pass
-
-    @staticmethod
-    def _record(info, inlet, d: DataRecord):
+        
+    def _record(self, info, inlet, d: DataRecord):
         """
 
         :param info:
@@ -134,8 +123,9 @@ class Tracker:
 
         try:
             # The following loop acquires data, computes band powers, and calculates neurofeedback metrics based on those band powers
-            while True:
+            while self.keepRecording:
                 #
+                
                 """ 3.1 ACQUIRE DATA """
 
                 # Obtain EEG data from the LSL stream
@@ -169,30 +159,34 @@ class Tracker:
                     metrics[i] = beta_metric
 
                 # print("alpha metric for 4 sensors are separately: {}".format(metrics))
-                print(" ")
+                #print(" ")
                 d.deltas.append(delta_sample)
                 d.thetas.append(theta_sample)
                 d.alphas.append(alpha_sample)
                 d.betas.append(beta_sample)
 
+                
         except KeyboardInterrupt:
             print('Closing!')
 
+            
     def start_stage(self, mode=None, stage=0):
         """
             Start relax stage and record data.
 
         :return:
         """
-
+        
         data_record = DataRecord()
         self.data_records[(mode, stage)] = data_record
 
         if self.recordingProcess is None or ~self.recordingProcess.is_alive():
             self.isRecording = True
-
-            self.recordingProcess = Process(target=self._record, args=(self.info, self.inlet, data_record,))
-
+            self.keepRecording = True
+#             self.recordingProcess = Process(target=_record, args=(self.info, self.inlet, data_record,))
+#             arr = mock_arr
+            #self.recordingProcess = Process(target=self._start_recording, args=(self.inlet, self.info, data_record, ))
+            self.recordingProcess = threading.Thread(target=self._record, args=(self.info, self.inlet, data_record, ))
             self.currentMode = mode
             self.currentStage = stage
 
@@ -202,13 +196,15 @@ class Tracker:
 
     def end_stage(self, mode=None, stage=0):
 
-        self.recordingProcess.terminate()
+        #self.recordingProcess.terminate()
+        
+        self.keepRecording = False
         self.currentMode = None
         self.currentStage = None
 
         data_record: DataRecord = self.data_records[(mode, stage)]
         data_record.get_average_powers()
-        print("average powers: {}".format(vars(data_record)))
+        print("average theta: {}".format(data_record.avg_thetas))
 
     def update_stage_threshold(self):
         self.threshold = self.get_threshold()

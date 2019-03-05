@@ -208,7 +208,7 @@ class Metrics:
         """
         alpha_metric = smooth_band_powers[band_cls.Alpha] / \
                        smooth_band_powers[band_cls.Delta]
-        print('Alpha Relaxation: ', alpha_metric)
+        #print('Alpha Relaxation: ', alpha_metric)
         return alpha_metric
 
     @staticmethod
@@ -222,7 +222,7 @@ class Metrics:
         """
         beta_metric = smooth_band_powers[band_cls.Beta] / \
                       smooth_band_powers[band_cls.Theta]
-        print('Beta Concentration: ', beta_metric)
+        #print('Beta Concentration: ', beta_metric)
         return beta_metric
 
     @staticmethod
@@ -238,5 +238,5 @@ class Metrics:
         #
         theta_metric = smooth_band_powers[band_cls.Theta] / \
                        smooth_band_powers[band_cls.Alpha]
-        print('Theta Relaxation: ', theta_metric)
+        #print('Theta Relaxation: ', theta_metric)
         return theta_metric

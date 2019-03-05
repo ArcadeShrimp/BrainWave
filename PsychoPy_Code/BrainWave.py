@@ -246,6 +246,7 @@ def run_psychopy(cmd: command.Tracker):
 
         # Check for ESC quit
         if endExpNow or event.getKeys(keyList=["escape"]):
+            win.close()
             core.quit()
 
         # refresh the screen
@@ -332,7 +333,7 @@ def run_psychopy(cmd: command.Tracker):
 
         # ------Prepare to start Routine "relax"-------
 
-        relaxing_image.setImage(relaxing_images)
+        relaxing_image.setImage("landscape1.jpg")
 
         relaxComponents = [relaxing_image]
         for thisComponent in relaxComponents:
@@ -351,6 +352,8 @@ def run_psychopy(cmd: command.Tracker):
 
             # check for quit (typically the Esc key)
             if endExpNow or event.getKeys(keyList=["escape"]):
+                cmd.end_stage(mode=RELAX, stage=trialCounter)
+                win.close()
                 core.quit()
 
             # refresh the screen
@@ -358,6 +361,7 @@ def run_psychopy(cmd: command.Tracker):
                 win.flip()
 
         cmd.end_stage(mode=RELAX, stage=trialCounter)
+        
         # -------Ending Routine "relax"-------
         for thisComponent in relaxComponents:
             if hasattr(thisComponent, "setAutoDraw"):
@@ -387,7 +391,9 @@ def run_psychopy(cmd: command.Tracker):
 
             # check for quit (typically the Esc key)
             if endExpNow or event.getKeys(keyList=["escape"]):
+                win.close()
                 core.quit()
+                
 
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -406,7 +412,7 @@ def run_psychopy(cmd: command.Tracker):
 
         # ------Prepare to start Routine "focus"-------
 
-        focus_image.setImage(focus_images)
+        focus_image.setImage("waldo1.png")
 
         focusComponents = [focus_image]
         for thisComponent in focusComponents:
@@ -424,6 +430,8 @@ def run_psychopy(cmd: command.Tracker):
 
             # check for quit (typically the Esc key)
             if endExpNow or event.getKeys(keyList=["escape"]):
+                cmd.end_stage(mode=RELAX, stage=trialCounter)
+                win.close()
                 core.quit()
 
             # refresh the screen
