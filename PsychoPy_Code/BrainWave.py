@@ -439,6 +439,7 @@ def run_psychopy(cmd: command.Tracker):
                 win.flip()
 
         cmd.end_stage(mode=FOCUS, stage=trialCounter)
+        
         # -------Ending Routine "focus"-------
         for thisComponent in focusComponents:
             if hasattr(thisComponent, "setAutoDraw"):
