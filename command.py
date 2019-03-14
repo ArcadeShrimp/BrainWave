@@ -217,7 +217,7 @@ class Tracker:
 
         data_record: DataRecord = self.data_records[(mode, stage)]
         m: MetricStats = data_record.get_metrics(channel_index=self.channelIndex)
-        print("average theta: {}".format(m.get_metrics().avg_thetas))
+        print("average theta: {}".format(m.avg_thetas))
 
     def update_stage_threshold(self):
         self.threshold = self.get_threshold()
