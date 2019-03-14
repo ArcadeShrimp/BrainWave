@@ -10,6 +10,8 @@ from psychopy import locale_setup, sound, gui, visual, core, data, event, loggin
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 
+import random as rd
+
 # numpy imports
 import numpy as np  # whole numpy lib is available, prepend 'np.'
 from numpy import (sin, cos, tan, log, log10, pi, average,
@@ -27,6 +29,10 @@ import command
 RELAX = 'relax'
 FOCUS = 'focus'
 
+relax_images = ["landscape1.jpg", "landscape2.jpg", "landscape3.jpg"]
+rd.shuffle(relax_images)
+waldo_images = ["waldo1.png", "waldo2.png", "waldo3.png"]
+rd.shuffle(waldo_images)
 
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
@@ -280,6 +286,8 @@ def run_psychopy(cmd: command.Tracker):
             exec('{} = thisTrial[paramName]'.format(paramName))
 
     trialCounter = 0
+    relaxTrialCounter = 0
+    focusTrialCounter = 0
     for thisTrial in trials:
         trialCounter += 1
         currentLoop = trials
@@ -333,7 +341,7 @@ def run_psychopy(cmd: command.Tracker):
 
         # ------Prepare to start Routine "relax"-------
 
-        relaxing_image.setImage("landscape1.jpg")
+        relaxing_image.setImage(relax_images[relaxTrialCounter])
 
         relaxComponents = [relaxing_image]
         for thisComponent in relaxComponents:
@@ -360,6 +368,7 @@ def run_psychopy(cmd: command.Tracker):
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
                 win.flip()
 
+        relaxTrialCounter += 1
         cmd.end_stage(mode=RELAX, stage=trialCounter)
         
         # -------Ending Routine "relax"-------
@@ -412,7 +421,7 @@ def run_psychopy(cmd: command.Tracker):
 
         # ------Prepare to start Routine "focus"-------
 
-        focus_image.setImage("waldo1.png")
+        focus_image.setImage(waldo_images[focusTrialCounter])
 
         focusComponents = [focus_image]
         for thisComponent in focusComponents:
@@ -438,6 +447,7 @@ def run_psychopy(cmd: command.Tracker):
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
                 win.flip()
 
+        focusTrialCounter += 1
         cmd.end_stage(mode=FOCUS, stage=trialCounter)
         
         # -------Ending Routine "focus"-------
@@ -449,5 +459,5 @@ def run_psychopy(cmd: command.Tracker):
     # make sure everything is closed down
     thisExp.abort()  # or data files will save again on exit
     win.close()
-    core.quit()
+    #core.quit()
 

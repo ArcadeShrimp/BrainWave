@@ -234,11 +234,11 @@ class Tracker:
         :return: the threshold determined as the average between relax_theta and focus_theta
         """
         relax_datas = [self.data_records[key] for key in self.data_records if key[0] == 'relax']
-        relax_thetas = [data_record.avg_thetas for data_record in relax_datas]
+        relax_thetas = [data_record.get_metrics(channel_index=self.channelIndex).avg_thetas for data_record in relax_datas]
         relax_theta = np.mean(relax_thetas)
 
         focus_datas = [self.data_records[key] for key in self.data_records if key[0] == 'focus']
-        focus_thetas = [data_record.avg_thetas for data_record in focus_datas]
+        focus_thetas = [data_record.get_metrics(channel_index=self.channelIndex).avg_thetas for data_record in focus_datas]
         focus_theta = np.mean(focus_thetas)
 
         return np.mean([relax_theta, focus_theta])

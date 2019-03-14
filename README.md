@@ -10,6 +10,12 @@ Users wear Muse and neural signal is sent to Windows PC through [Muselsl](https:
 directs users to relax and focus. This trains our system to understand the users current specific theta power threshold which
 determines 'focused' vs 'non-focused' states.
 
+## Code Structure
+Wave.ipynb : Main 
+command.py : The Tracker class and other metric collection things
+PsychoPy_Code/BrainWave.py : runPsychopy() to run the calibration visuals
+
+
 
 ## PsychoPy_Code
 - BrainWave.py contains the most up-to-date code for the PsychoPy calibration portion. 
@@ -23,4 +29,4 @@ Workflow:
       3c) Focus cue 1s <br>
       3d) Focus 7s w/ Where's Waldo image <br>
   
-  
+
