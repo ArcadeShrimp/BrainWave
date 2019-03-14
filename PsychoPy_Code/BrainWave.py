@@ -341,7 +341,7 @@ def run_psychopy(cmd: command.Tracker):
 
         # ------Prepare to start Routine "relax"-------
 
-        relaxing_image.setImage(relax_images[trialCounter])
+        relaxing_image.setImage(relax_images[relaxTrialCounter])
 
         relaxComponents = [relaxing_image]
         for thisComponent in relaxComponents:
@@ -421,7 +421,7 @@ def run_psychopy(cmd: command.Tracker):
 
         # ------Prepare to start Routine "focus"-------
 
-        focus_image.setImage(waldo_images[trialCounter])
+        focus_image.setImage(waldo_images[focusTrialCounter])
 
         focusComponents = [focus_image]
         for thisComponent in focusComponents:
