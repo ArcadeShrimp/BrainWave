@@ -449,5 +449,5 @@ def run_psychopy(cmd: command.Tracker):
     # make sure everything is closed down
     thisExp.abort()  # or data files will save again on exit
     win.close()
-    core.quit()
+    #core.quit()
 
