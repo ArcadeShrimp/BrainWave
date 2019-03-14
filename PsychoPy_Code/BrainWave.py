@@ -286,6 +286,8 @@ def run_psychopy(cmd: command.Tracker):
             exec('{} = thisTrial[paramName]'.format(paramName))
 
     trialCounter = 0
+    relaxTrialCounter = 0
+    focusTrialCounter = 0
     for thisTrial in trials:
         trialCounter += 1
         currentLoop = trials
@@ -366,6 +368,7 @@ def run_psychopy(cmd: command.Tracker):
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
                 win.flip()
 
+        relaxTrialCounter += 1
         cmd.end_stage(mode=RELAX, stage=trialCounter)
         
         # -------Ending Routine "relax"-------
@@ -444,6 +447,7 @@ def run_psychopy(cmd: command.Tracker):
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
                 win.flip()
 
+        focusTrialCounter += 1
         cmd.end_stage(mode=FOCUS, stage=trialCounter)
         
         # -------Ending Routine "focus"-------
