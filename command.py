@@ -46,6 +46,8 @@ class DataRecord:
         self.thetas = []
         self.alphas = []
         self.betas = []
+        
+        fooofs = {}
 
     def get_metrics(self, channel_index):
         """
@@ -219,6 +221,10 @@ class Tracker:
         m: MetricStats = data_record.get_metrics(channel_index=self.channelIndex)
         print("average theta: {}".format(m.avg_thetas))
 
+    def create_fooof(self, mode=None, stage=0):
+        # create freqs and powers
+        
+        
     def update_stage_threshold(self):
         self.threshold = self.get_threshold()
 

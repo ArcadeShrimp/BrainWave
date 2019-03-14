@@ -220,10 +220,9 @@ class Metrics:
         :param band_cls:
         :return:
         """
-        beta_metric = smooth_band_powers[band_cls.Beta] / \
-                      smooth_band_powers[band_cls.Theta]
-        #print('Beta Concentration: ', beta_metric)
-        return beta_metric
+        tb_ratio = smooth_band_powers[band_cls.Theta]/smooth_band_powers[band_cls.Beta]
+        
+        return tb_ratio
 
     @staticmethod
     def theta_protocol(smooth_band_powers, band_cls):
