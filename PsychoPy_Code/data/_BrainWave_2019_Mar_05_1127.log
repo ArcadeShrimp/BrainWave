@@ -1,0 +1,58 @@
+41317.1788 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [1920, 1080]. Using actual size
+41320.3721 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=True, args=UNKNOWN, autoLog=True, bitsMode=UNKNOWN, blendMode='avg', color=array([0., 0., 0.]), colorSpace='rgb', fullscr=<method-wrapper '__getattribute__' of attributeSetter object at 0x000001FFE2A157B8>, gamma=None, kwargs=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x000001FFE4D94F98>, multiSample=False, name='window1', numSamples=2, pos=[0.0, 0.0], screen=0, size=array([1920, 1080]), stereo=False, units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+41320.3721 	EXP 	window1: recordFrameIntervals = False
+41320.5358 	EXP 	window1: recordFrameIntervals = True
+41320.7191 	EXP 	window1: recordFrameIntervals = False
+41321.4975 	EXP 	Created introduction = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, languageStyle='LTR', name='introduction', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([255., 255., 255.]), text=str(...), units='height', win=Window(...), wrapWidth=1)
+41321.5540 	EXP 	Created instructions = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='instructions', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([255., 255., 255.]), text=str(...), units='height', win=Window(...), wrapWidth=1)
+41321.5653 	EXP 	Created cue = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, languageStyle='LTR', name='cue', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([255., 255., 255.]), text='~~~Relax~~~', units='height', win=Window(...), wrapWidth=1)
+41321.7895 	EXP 	Created relaxing_image = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, image='sin', interpolate=True, mask=None, maskParams=None, name='relaxing_image', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([1.7, 1. ]), texRes=128, units='height', win=Window(...))
+41321.8297 	EXP 	Created whereswaldo = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, image='wheres-waldo.jpg', interpolate=True, mask=None, maskParams=None, name='whereswaldo', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([0.7, 0.5]), texRes=128, units='height', win=Window(...))
+41321.8313 	EXP 	Created focus_image = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, image='sin', interpolate=True, mask=None, maskParams=None, name='focus_image', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([1.7, 1. ]), texRes=128, units='height', win=Window(...))
+41321.8395 	EXP 	introduction: autoDraw = True
+41322.5542 	DATA 	Mouse: Left button down, pos=(949,463)
+41322.5690 	EXP 	introduction: autoDraw = False
+41322.5690 	EXP 	instructions: autoDraw = True
+41322.7694 	DATA 	Mouse:  Left button up, pos=(949,463)
+41322.9034 	DATA 	Mouse: Left button down, pos=(949,463)
+41323.0008 	EXP 	Imported images.xlsx as conditions, 3 conditions, 2 params
+41323.0016 	EXP 	Created sequence: random, trialTypes=3, nReps=1, seed=None
+41323.0020 	EXP 	New trial (rep=0, index=0): OrderedDict([('relaxing_images', 'landscape3.jpg'), ('focus_images', 'waldo3.png')])
+41323.0071 	EXP 	instructions: autoDraw = False
+41323.0071 	EXP 	cue: autoDraw = True
+41323.1535 	DATA 	Mouse:  Left button up, pos=(949,463)
+41323.1540 	DATA 	Mouse: Left button down, pos=(949,463)
+41323.3699 	DATA 	Mouse:  Left button up, pos=(949,463)
+41323.3703 	DATA 	Mouse: Left button down, pos=(949,463)
+41323.5859 	DATA 	Mouse:  Left button up, pos=(949,463)
+41324.8539 	EXP 	cue: autoDraw = False
+41324.8539 	EXP 	relaxing_image: image = 'landscape1.jpg'
+41324.8539 	EXP 	relaxing_image: autoDraw = True
+41333.9363 	EXP 	relaxing_image: autoDraw = False
+41333.9363 	EXP 	whereswaldo: autoDraw = True
+41335.2324 	EXP 	whereswaldo: autoDraw = False
+41335.2324 	EXP 	focus_image: image = 'waldo1.png'
+41335.2324 	EXP 	focus_image: autoDraw = True
+41341.9206 	EXP 	New trial (rep=0, index=1): OrderedDict([('relaxing_images', 'landscape2.jpg'), ('focus_images', 'waldo2.png')])
+41341.9360 	EXP 	focus_image: autoDraw = False
+41341.9360 	EXP 	cue: autoDraw = True
+41343.5314 	EXP 	cue: autoDraw = False
+41343.5314 	EXP 	relaxing_image: image = 'landscape1.jpg'
+41343.5314 	EXP 	relaxing_image: autoDraw = True
+41352.9358 	EXP 	relaxing_image: autoDraw = False
+41352.9358 	EXP 	whereswaldo: autoDraw = True
+41354.1051 	EXP 	whereswaldo: autoDraw = False
+41354.1051 	EXP 	focus_image: image = 'waldo1.png'
+41354.1051 	EXP 	focus_image: autoDraw = True
+41360.9204 	EXP 	New trial (rep=0, index=2): OrderedDict([('relaxing_images', 'landscape1.jpg'), ('focus_images', 'waldo1.png')])
+41360.9361 	EXP 	focus_image: autoDraw = False
+41360.9361 	EXP 	cue: autoDraw = True
+41362.4302 	EXP 	cue: autoDraw = False
+41362.4302 	EXP 	relaxing_image: image = 'landscape1.jpg'
+41362.4302 	EXP 	relaxing_image: autoDraw = True
+41371.9353 	EXP 	relaxing_image: autoDraw = False
+41371.9353 	EXP 	whereswaldo: autoDraw = True
+41373.0938 	EXP 	whereswaldo: autoDraw = False
+41373.0938 	EXP 	focus_image: image = 'waldo1.png'
+41373.0938 	EXP 	focus_image: autoDraw = True
+41379.9982 	EXP 	window1: mouseVisible = True

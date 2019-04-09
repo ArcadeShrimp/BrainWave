@@ -1,0 +1,58 @@
+10.0030 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [1920, 1080]. Using actual size
+10.9547 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=True, args=UNKNOWN, autoLog=True, bitsMode=UNKNOWN, blendMode='avg', color=array([0., 0., 0.]), colorSpace='rgb', fullscr=<method-wrapper '__getattribute__' of attributeSetter object at 0x000001BAD6B6B208>, gamma=None, kwargs=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x000001BAD8190B38>, multiSample=False, name='window1', numSamples=2, pos=[0.0, 0.0], screen=0, size=array([1920, 1080]), stereo=False, units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+10.9547 	EXP 	window1: recordFrameIntervals = False
+11.1208 	EXP 	window1: recordFrameIntervals = True
+11.1926 	WARNING 	t of last frame was 20.12ms (=1/49)
+11.2615 	WARNING 	t of last frame was 22.17ms (=1/45)
+11.3951 	WARNING 	t of last frame was 23.45ms (=1/42)
+11.5759 	WARNING 	t of last frame was 21.16ms (=1/47)
+11.7548 	EXP 	window1: recordFrameIntervals = False
+11.8531 	EXP 	Created introduction = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, languageStyle='LTR', name='introduction', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([255., 255., 255.]), text=str(...), units='height', win=Window(...), wrapWidth=1)
+11.8980 	EXP 	Created instructions = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='instructions', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([255., 255., 255.]), text=str(...), units='height', win=Window(...), wrapWidth=1)
+11.9069 	EXP 	Created cue = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, languageStyle='LTR', name='cue', opacity=1.0, ori=0, pos=array([0., 0.]), rgb=array([255., 255., 255.]), text='~~~Relax~~~', units='height', win=Window(...), wrapWidth=1)
+11.9101 	EXP 	Created relaxing_image = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, image='sin', interpolate=True, mask=None, maskParams=None, name='relaxing_image', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([1.7, 1. ]), texRes=128, units='height', win=Window(...))
+11.9189 	EXP 	Created whereswaldo = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, image='wheres-waldo.jpg', interpolate=True, mask=None, maskParams=None, name='whereswaldo', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([0.7, 0.5]), texRes=128, units='height', win=Window(...))
+11.9200 	EXP 	Created focus_image = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, image='sin', interpolate=True, mask=None, maskParams=None, name='focus_image', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([1.7, 1. ]), texRes=128, units='height', win=Window(...))
+11.9253 	EXP 	introduction: autoDraw = True
+12.8723 	DATA 	Mouse: Left button down, pos=(1196,496)
+12.8877 	EXP 	introduction: autoDraw = False
+12.8877 	EXP 	instructions: autoDraw = True
+13.0886 	DATA 	Mouse:  Left button up, pos=(1196,496)
+14.0549 	DATA 	Mouse: Left button down, pos=(1196,496)
+14.0749 	EXP 	Imported images.xlsx as conditions, 3 conditions, 2 params
+14.0757 	EXP 	Created sequence: random, trialTypes=3, nReps=1, seed=None
+14.0763 	EXP 	New trial (rep=0, index=0): OrderedDict([('relaxing_images', 'landscape3.jpg'), ('focus_images', 'waldo3.png')])
+14.0861 	EXP 	instructions: autoDraw = False
+14.0861 	EXP 	cue: autoDraw = True
+14.2714 	DATA 	Mouse:  Left button up, pos=(1196,496)
+16.1169 	EXP 	cue: autoDraw = False
+16.1169 	EXP 	relaxing_image: image = 'landscape1.jpg'
+16.1169 	EXP 	relaxing_image: autoDraw = True
+25.0858 	EXP 	relaxing_image: autoDraw = False
+25.0858 	EXP 	whereswaldo: autoDraw = True
+26.4655 	EXP 	whereswaldo: autoDraw = False
+26.4655 	EXP 	focus_image: image = 'waldo1.png'
+26.4655 	EXP 	focus_image: autoDraw = True
+33.0762 	EXP 	New trial (rep=0, index=1): OrderedDict([('relaxing_images', 'landscape1.jpg'), ('focus_images', 'waldo1.png')])
+33.0886 	EXP 	focus_image: autoDraw = False
+33.0886 	EXP 	cue: autoDraw = True
+34.6766 	EXP 	cue: autoDraw = False
+34.6766 	EXP 	relaxing_image: image = 'landscape1.jpg'
+34.6766 	EXP 	relaxing_image: autoDraw = True
+44.0862 	EXP 	relaxing_image: autoDraw = False
+44.0862 	EXP 	whereswaldo: autoDraw = True
+45.3025 	EXP 	whereswaldo: autoDraw = False
+45.3025 	EXP 	focus_image: image = 'waldo1.png'
+45.3025 	EXP 	focus_image: autoDraw = True
+52.8611 	EXP 	New trial (rep=0, index=2): OrderedDict([('relaxing_images', 'landscape2.jpg'), ('focus_images', 'waldo2.png')])
+52.8641 	EXP 	focus_image: autoDraw = False
+52.8641 	EXP 	cue: autoDraw = True
+53.5631 	EXP 	cue: autoDraw = False
+53.5631 	EXP 	relaxing_image: image = 'landscape1.jpg'
+53.5631 	EXP 	relaxing_image: autoDraw = True
+63.0879 	EXP 	relaxing_image: autoDraw = False
+63.0879 	EXP 	whereswaldo: autoDraw = True
+64.2333 	EXP 	whereswaldo: autoDraw = False
+64.2333 	EXP 	focus_image: image = 'waldo1.png'
+64.2333 	EXP 	focus_image: autoDraw = True
+71.1025 	EXP 	window1: mouseVisible = True

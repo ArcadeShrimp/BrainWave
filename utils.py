@@ -19,6 +19,11 @@ from scipy.signal import butter, lfilter, lfilter_zi
 
 NOTCH_B, NOTCH_A = butter(4, np.array([55, 65]) / (256 / 2), btype='bandstop')
 
+class Band:
+    Delta = 0
+    Theta = 1
+    Alpha = 2
+    Beta = 3
 
 def epoch(data, samples_epoch, samples_overlap=0):
     """Extract epochs from a time series.
@@ -154,19 +159,6 @@ def update_buffer(data_buffer, new_data, notch=False, filter_state=None):
     """
     if new_data.ndim == 1:
         new_data = new_data.reshape(-1, data_buffer.shape[1])
-
-  #  print(NOTCH_B.shape)    
-  #  print(NOTCH_A.shape)    
-  #  print(new_data.shape)        
-        
-  #  if notch:
-  #      if filter_state is None:
-  #          filter_state = np.tile(lfilter_zi(NOTCH_B, NOTCH_A), (data_buffer.shape[1], 1)).T
-            
-  #      new_data, filter_state = lfilter(NOTCH_B, NOTCH_A, new_data, axis=0, zi=filter_state)
-
-#     print(new_data.shape)
-#     print(data_buffer.shape)
     
     new_buffer = np.concatenate((data_buffer, new_data), axis=0)
     new_buffer = new_buffer[new_data.shape[0]:, :]
@@ -182,3 +174,46 @@ def get_last_data(data_buffer, newest_samples):
     new_buffer = data_buffer[(data_buffer.shape[0] - newest_samples):, :]
 
     return new_buffer
+
+def _create_eeg_buffer(fs, buffer_length):
+    """ Initialize raw EEG data buffer
+    :param fs:
+    :return:
+    """
+    eeg_buffer = np.zeros((int(fs * buffer_length), 1))
+    return eeg_buffer
+
+
+def _create_filter_state():
+    """ for use with the notch filter
+
+    :return:
+    """
+    filter_state = None
+    return filter_state
+
+
+def _get_num_epoch(buffer_length, epoch_length, shift_length):
+    """ Compute the number of epochs in "buffer_length"
+
+    :param buffer_length:
+    :param epoch_length:
+    :param shift_length:
+    :return:
+    """
+    n_win_test = int(np.floor((buffer_length - epoch_length) /
+                              shift_length + 1))
+    return n_win_test
+
+
+def _get_smooth_band_powers(band_buffer):
+    """
+
+    :param band_buffer:
+    :return:
+    """
+
+    # Compute the average band powers for all epochs in buffer
+    # This helps to smooth out noise
+    smooth_band_powers = np.mean(band_buffer, axis=0)
+    return smooth_band_powers
