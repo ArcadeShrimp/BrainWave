@@ -115,6 +115,18 @@ class ChannelDataProcessor:
                                          self.epoch_length * self.fs)
         return data_epoch
 
+    def _get_smooth_band_powers(band_buffer):
+    """
+
+    :param band_buffer:
+    :return:
+    """
+
+    # Compute the average band powers for all epochs in buffer
+    # This helps to smooth out noise
+    smooth_band_powers = np.mean(band_buffer, axis=0)
+    return smooth_band_powers
+    
     def get_channel_smooth_band_powers(self, index_channel):
         """
 
@@ -135,8 +147,7 @@ class ChannelDataProcessor:
 
         # Compute band powers
         band_powers = utils.compute_band_powers(data_epoch, self.fs)
-        band_buffer, _ = utils.update_buffer(band_buffer,
-                                             np.asarray([band_powers]))
+        band_buffer, _ = utils.update_buffer(band_buffer, np.asarray([band_powers]))
 
        # print('Delta: ', band_powers[self.band_cls.Delta], ' Theta: ', band_powers[self.band_cls.Theta],
         #      ' Alpha: ', band_powers[self.band_cls.Alpha], ' Beta: ', band_powers[self.band_cls.Beta])

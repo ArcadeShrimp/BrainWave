@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Muse LSL Example Auxiliary Tools
 These functions perform the lower-level operations involved in buffering,
@@ -206,14 +205,3 @@ def _get_num_epoch(buffer_length, epoch_length, shift_length):
     return n_win_test
 
 
-def _get_smooth_band_powers(band_buffer):
-    """
-
-    :param band_buffer:
-    :return:
-    """
-
-    # Compute the average band powers for all epochs in buffer
-    # This helps to smooth out noise
-    smooth_band_powers = np.mean(band_buffer, axis=0)
-    return smooth_band_powers
