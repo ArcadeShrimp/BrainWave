@@ -67,9 +67,9 @@ class ChannelDataProcessor:
         self.epoch_length = epoch_length
         self.overlap_length = overlap_length
 
-        self.n_win_test = _get_num_epoch(buffer_length=self.buffer_length,
-                                         epoch_length=self.epoch_length,
-                                         shift_length=self.shift_length)
+        self.n_win_test = utils._get_num_epoch(buffer_length=self.buffer_length,
+                                               epoch_length=self.epoch_length,
+                                               shift_length=self.shift_length)
 
         self.eeg_data = None  # Current Epoch EEG Data
 
@@ -91,8 +91,8 @@ class ChannelDataProcessor:
         :return:
         """
 
-        self.eeg_buffer = _create_eeg_buffer(fs=self.fs, buffer_length=self.buffer_length)
-        self.filter_state = _create_filter_state()
+        self.eeg_buffer = utils._create_eeg_buffer(fs=self.fs, buffer_length=self.buffer_length)
+        self.filter_state = utils._create_filter_state()
 
     def _retrieve_channel_data(self, eeg_data, index_channel):
 
@@ -141,7 +141,7 @@ class ChannelDataProcessor:
        # print('Delta: ', band_powers[self.band_cls.Delta], ' Theta: ', band_powers[self.band_cls.Theta],
         #      ' Alpha: ', band_powers[self.band_cls.Alpha], ' Beta: ', band_powers[self.band_cls.Beta])
 
-        smooth_band_powers = _get_smooth_band_powers(band_buffer)
+        smooth_band_powers = utils._get_smooth_band_powers(band_buffer)
 
         return smooth_band_powers
 

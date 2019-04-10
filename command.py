@@ -223,7 +223,7 @@ class Tracker:
 
     def create_fooof(self, mode=None, stage=0):
         # create freqs and powers
-        
+        raise NotImplementedError
         
     def update_stage_threshold(self):
         self.threshold = self.get_threshold()

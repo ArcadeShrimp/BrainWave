@@ -8,6 +8,8 @@ from pylsl import StreamInlet, resolve_byprop
 import json
 import warnings
 import utils
+from command import MetricStats
+from datarecord import DataRecord
 from process_data import ChannelDataProcessor, Metrics
 
 # We are working with 4 channels (Billy) [0], [1], [2], [3] as 4 index_channel values
@@ -102,7 +104,7 @@ class Calibrator:
                 c = ChannelDataProcessor(buffer_length=BUFFER_LENGTH,
                                          epoch_length=EPOCH_LENGTH,
                                          overlap_length=OVERLAP_LENGTH,
-                                         shift_length=SHIFT_LENGTH, fs=fs, band_cls=Band)
+                                         shift_length=SHIFT_LENGTH, fs=fs, band_cls=utils.Band)
 
                 c.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
                 metrics = np.zeros(NUM_CHANNELS)
@@ -121,7 +123,7 @@ class Calibrator:
                     beta_sample.append(csbp[3])
 
                     # Run calculations on csbp to obtain desired metrics
-                    beta_metric = Metrics.beta_protocol(csbp, Band)
+                    beta_metric = Metrics.beta_protocol(csbp, utils.Band)
                     metrics[i] = beta_metric
 
                 d.deltas.append(delta_sample)

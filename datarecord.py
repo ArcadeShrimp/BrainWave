@@ -1,4 +1,6 @@
 """ A DataRecord holds information for a single PsychoPy Trial, ex) Relax_1, Focus_1"""
+import numpy as np
+
 import utils
 
 class DataRecord:

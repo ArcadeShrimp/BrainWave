@@ -34,7 +34,7 @@ import matplotlib.pyplot as plt  # Module used for plotting
 from pylsl import StreamInlet, resolve_byprop  # Module to receive EEG data
 import utils  # Our own utility functions
 from process_data import ChannelDataProcessor, Metrics
-from PsychoPy_Code.BrainWave import run_psychopy
+from PsychoPy_Code.PsychoRun import run_psychopy
 
 # Handy little enum to make code more readable
 
