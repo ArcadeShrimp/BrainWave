@@ -10,6 +10,8 @@ from psychopy import locale_setup, sound, gui, visual, core, data, event, loggin
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 
+import random as rd
+
 # numpy imports
 import numpy as np  # whole numpy lib is available, prepend 'np.'
 from numpy import (sin, cos, tan, log, log10, pi, average,
@@ -19,16 +21,25 @@ from numpy.random import random, randint, normal, shuffle
 import os  # handy system and path functions
 import sys  # to get file system encoding
 
+sys.path.append('../')
+
+import command
+
 # constants
 RELAX = 'relax'
 FOCUS = 'focus'
 
-def runCalibration (cmd) : 
+relax_images = ["./pics/landscape1.jpg", "./pics/landscape2.jpg", "./pics/landscape3.jpg"]
+rd.shuffle(relax_images)
+waldo_images = ["./pics/waldo1.png", "./pics/waldo2.png", "./pics/waldo3.png"]
+rd.shuffle(waldo_images)
 
-    # Ensure that relative paths start from the same directory as this script
-    _thisDir = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(_thisDir)
+# Ensure that relative paths start from the same directory as this script
+_thisDir = os.path.dirname(os.path.abspath(__file__))
+os.chdir(_thisDir)
 
+
+def run_psychopy(cmd: command.Tracker):
 
     #################
     ### Start Box ###
@@ -78,15 +89,15 @@ def runCalibration (cmd) :
 
 
     #############################
-    ### Initialize components ### 
+    ### Initialize components ###
     #############################
 
     # Initialize components for Routine "intro"
     introduction = visual.TextStim(win=win, name='introduction',
         text='BrainWave\n\nCalibration Phase\n\nClick to advance. ',
         font='Arial',
-        pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-        color='white', colorSpace='rgb', opacity=1, 
+        pos=(0, 0), height=0.1, wrapWidth=None, ori=0,
+        color='white', colorSpace='rgb', opacity=1,
         languageStyle='LTR',
         depth=0.0)
     mouse = event.Mouse(win=win)
@@ -96,8 +107,8 @@ def runCalibration (cmd) :
     instructions = visual.TextStim(win=win, name='instructions',
         text='There will be 3 rounds of stimuli. \n\n1) Relax when you see pretty landscapes.\n\n2) Focus when you need to find Waldo. \n\n\n\nClick to get started.',
         font='Arial',
-        pos=(0, 0), height=0.05, wrapWidth=None, ori=0, 
-        color='white', colorSpace='rgb', opacity=1, 
+        pos=(0, 0), height=0.05, wrapWidth=None, ori=0,
+        color='white', colorSpace='rgb', opacity=1,
         languageStyle='LTR',
         depth=0.0)
     mouse2 = event.Mouse(win=win)
@@ -107,8 +118,8 @@ def runCalibration (cmd) :
     cue = visual.TextStim(win=win, name='cue',
         text='~~~Relax~~~',
         font='Arial',
-        pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-        color='white', colorSpace='rgb', opacity=1, 
+        pos=(0, 0), height=0.1, wrapWidth=None, ori=0,
+        color='white', colorSpace='rgb', opacity=1,
         languageStyle='LTR',
         depth=0.0)
 
@@ -142,7 +153,7 @@ def runCalibration (cmd) :
 
     # Create some handy timers
     globalClock = core.Clock()  # to track the time since experiment started
-    routineTimer = core.CountdownTimer()  # to track time remaining of each (non-slip) routine 
+    routineTimer = core.CountdownTimer()  # to track time remaining of each (non-slip) routine
 
     ################
     ### Routines ###
@@ -176,7 +187,7 @@ def runCalibration (cmd) :
             # keep track of start time/frame for later
             mouse.status = STARTED
             prevButtonState = mouse.getPressed()  # if button is down already this ISN'T a new click
-        
+
         # Check if mouse pressed
         if mouse.status == STARTED:  # only update if started and not finished!
             buttons = mouse.getPressed()
@@ -185,11 +196,11 @@ def runCalibration (cmd) :
                 if sum(buttons) > 0:  # state changed to a new click
                     # abort routine on response
                     continueRoutine = False
-        
+
         # Check for ESC quit
         if endExpNow or event.getKeys(keyList=["escape"]):
             core.quit()
-        
+
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()
@@ -229,7 +240,7 @@ def runCalibration (cmd) :
             # keep track of start time/frame for later
             mouse2.status = STARTED
             prevButtonState = mouse2.getPressed()  # if button is down already this ISN'T a new click
-        
+
         # Check if mouse pressed
         if mouse2.status == STARTED:  # only update if started and not finished!
             buttons = mouse2.getPressed()
@@ -238,11 +249,12 @@ def runCalibration (cmd) :
                 if sum(buttons) > 0:  # state changed to a new click
                     # abort routine on response
                     continueRoutine = False
-        
+
         # Check for ESC quit
         if endExpNow or event.getKeys(keyList=["escape"]):
+            win.close()
             core.quit()
-        
+
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()
@@ -262,7 +274,7 @@ def runCalibration (cmd) :
     #####################
 
     # set up handler to look after randomisation of conditions etc
-    trials = data.TrialHandler(nReps=1, method='random', 
+    trials = data.TrialHandler(nReps=1, method='random',
         extraInfo=expInfo, originPath=-1,
         trialList=data.importConditions('images.xlsx'),
         seed=None, name='trials')
@@ -274,6 +286,8 @@ def runCalibration (cmd) :
             exec('{} = thisTrial[paramName]'.format(paramName))
 
     trialCounter = 0
+    relaxTrialCounter = 0
+    focusTrialCounter = 0
     for thisTrial in trials:
         trialCounter += 1
         currentLoop = trials
@@ -281,7 +295,8 @@ def runCalibration (cmd) :
         if thisTrial != None:
             for paramName in thisTrial:
                 exec('{} = thisTrial[paramName]'.format(paramName))
-        
+
+
         #########################
         #########################
         ### RELAX CUE ROUTINE ###
@@ -326,14 +341,14 @@ def runCalibration (cmd) :
 
         # ------Prepare to start Routine "relax"-------
 
-        relaxing_image.setImage(relaxing_images)
+        relaxing_image.setImage(relax_images[relaxTrialCounter])
 
         relaxComponents = [relaxing_image]
         for thisComponent in relaxComponents:
             if hasattr(thisComponent, 'status'):
                 thisComponent.status = NOT_STARTED
-        
-        # Tell commander to start recording for Relax
+
+
         cmd.start_stage(mode=RELAX, stage=trialCounter)
         routineTimer.add(10.000000)
         continueRoutine = True
@@ -342,17 +357,20 @@ def runCalibration (cmd) :
             if relaxing_image.status == NOT_STARTED:
                 relaxing_image.status = STARTED
                 relaxing_image.setAutoDraw(True)
-            
+
             # check for quit (typically the Esc key)
             if endExpNow or event.getKeys(keyList=["escape"]):
+                cmd.end_stage(mode=RELAX, stage=trialCounter)
+                win.close()
                 core.quit()
 
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
                 win.flip()
 
+        relaxTrialCounter += 1
         cmd.end_stage(mode=RELAX, stage=trialCounter)
-
+        
         # -------Ending Routine "relax"-------
         for thisComponent in relaxComponents:
             if hasattr(thisComponent, "setAutoDraw"):
@@ -382,7 +400,9 @@ def runCalibration (cmd) :
 
             # check for quit (typically the Esc key)
             if endExpNow or event.getKeys(keyList=["escape"]):
+                win.close()
                 core.quit()
+                
 
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -401,14 +421,13 @@ def runCalibration (cmd) :
 
         # ------Prepare to start Routine "focus"-------
 
-        focus_image.setImage(focus_images)
+        focus_image.setImage(waldo_images[focusTrialCounter])
 
         focusComponents = [focus_image]
         for thisComponent in focusComponents:
             if hasattr(thisComponent, 'status'):
                 thisComponent.status = NOT_STARTED
-        
-        # Tell commander to start recording for Focus
+
         cmd.start_stage(mode=FOCUS, stage=trialCounter)
         routineTimer.add(7.000000)
         continueRoutine = True
@@ -417,16 +436,20 @@ def runCalibration (cmd) :
             if focus_image.status == NOT_STARTED:
                 focus_image.status = STARTED
                 focus_image.setAutoDraw(True)
-            
+
             # check for quit (typically the Esc key)
             if endExpNow or event.getKeys(keyList=["escape"]):
+                cmd.end_stage(mode=RELAX, stage=trialCounter)
+                win.close()
                 core.quit()
 
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
                 win.flip()
 
+        focusTrialCounter += 1
         cmd.end_stage(mode=FOCUS, stage=trialCounter)
+        
         # -------Ending Routine "focus"-------
         for thisComponent in focusComponents:
             if hasattr(thisComponent, "setAutoDraw"):
@@ -436,5 +459,5 @@ def runCalibration (cmd) :
     # make sure everything is closed down
     thisExp.abort()  # or data files will save again on exit
     win.close()
-    core.quit()
+    #core.quit()
 

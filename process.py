@@ -33,51 +33,6 @@ Adapted / Refactored from:
 import utils
 import numpy as np  # Module that simplifies computations on matrices
 
-
-def _create_eeg_buffer(fs, buffer_length):
-    """ Initialize raw EEG data buffer
-    :param fs:
-    :return:
-    """
-    eeg_buffer = np.zeros((int(fs * buffer_length), 1))
-    return eeg_buffer
-
-
-def _create_filter_state():
-    """ for use with the notch filter
-
-    :return:
-    """
-    filter_state = None
-    return filter_state
-
-
-def _get_num_epoch(buffer_length, epoch_length, shift_length):
-    """ Compute the number of epochs in "buffer_length"
-
-    :param buffer_length:
-    :param epoch_length:
-    :param shift_length:
-    :return:
-    """
-    n_win_test = int(np.floor((buffer_length - epoch_length) /
-                              shift_length + 1))
-    return n_win_test
-
-
-def _get_smooth_band_powers(band_buffer):
-    """
-
-    :param band_buffer:
-    :return:
-    """
-
-    # Compute the average band powers for all epochs in buffer
-    # This helps to smooth out noise
-    smooth_band_powers = np.mean(band_buffer, axis=0)
-    return smooth_band_powers
-
-
 class ChannelDataProcessor:
     """
 
@@ -112,9 +67,9 @@ class ChannelDataProcessor:
         self.epoch_length = epoch_length
         self.overlap_length = overlap_length
 
-        self.n_win_test = _get_num_epoch(buffer_length=self.buffer_length,
-                                         epoch_length=self.epoch_length,
-                                         shift_length=self.shift_length)
+        self.n_win_test = utils._get_num_epoch(buffer_length=self.buffer_length,
+                                               epoch_length=self.epoch_length,
+                                               shift_length=self.shift_length)
 
         self.eeg_data = None  # Current Epoch EEG Data
 
@@ -136,8 +91,8 @@ class ChannelDataProcessor:
         :return:
         """
 
-        self.eeg_buffer = _create_eeg_buffer(fs=self.fs, buffer_length=self.buffer_length)
-        self.filter_state = _create_filter_state()
+        self.eeg_buffer = utils._create_eeg_buffer(fs=self.fs, buffer_length=self.buffer_length)
+        self.filter_state = utils._create_filter_state()
 
     def _retrieve_channel_data(self, eeg_data, index_channel):
 
@@ -186,56 +141,8 @@ class ChannelDataProcessor:
        # print('Delta: ', band_powers[self.band_cls.Delta], ' Theta: ', band_powers[self.band_cls.Theta],
         #      ' Alpha: ', band_powers[self.band_cls.Alpha], ' Beta: ', band_powers[self.band_cls.Beta])
 
-        smooth_band_powers = _get_smooth_band_powers(band_buffer)
+        smooth_band_powers = utils._get_smooth_band_powers(band_buffer)
 
         return smooth_band_powers
 
 
-class Metrics:
-    """
-    3.3 COMPUTE NEUROFEEDBACK METRICS
-        These metrics could also be used to drive brain-computer interfaces
-    """
-
-    @staticmethod
-    def alpha_protocol(smooth_band_powers, band_cls):
-        """ Alpha Protocol:
-            Simple redout of alpha power, divided by delta waves in order to rule out noise
-
-        :param smooth_band_powers:
-        :param band_cls:
-        :return:
-        """
-        alpha_metric = smooth_band_powers[band_cls.Alpha] / \
-                       smooth_band_powers[band_cls.Delta]
-        #print('Alpha Relaxation: ', alpha_metric)
-        return alpha_metric
-
-    @staticmethod
-    def beta_protocol(smooth_band_powers, band_cls):
-        """ Beta Protocol:
-            Beta waves have been used as a measure of mental activity and concentration
-            This beta over theta ratio is commonly used as neurofeedback for ADHD
-        :param smooth_band_powers:
-        :param band_cls:
-        :return:
-        """
-        tb_ratio = smooth_band_powers[band_cls.Theta]/smooth_band_powers[band_cls.Beta]
-        
-        return tb_ratio
-
-    @staticmethod
-    def theta_protocol(smooth_band_powers, band_cls):
-        """ Alpha/Theta Protocol:
-            This is another popular neurofeedback metric for stress reduction
-            Higher theta over alpha is supposedly associated with reduced anxiety
-
-        :param smooth_band_powers:
-        :param band_cls:
-        :return:
-        """
-        #
-        theta_metric = smooth_band_powers[band_cls.Theta] / \
-                       smooth_band_powers[band_cls.Alpha]
-        #print('Theta Relaxation: ', theta_metric)
-        return theta_metric

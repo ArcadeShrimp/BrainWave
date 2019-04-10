@@ -4,11 +4,12 @@ import time
 
 from muselsl import *
 import numpy as np
-import matplotlib.pyplot as plt
 from pylsl import StreamInlet, resolve_byprop
 import json
 import warnings
-
+import utils
+from command import MetricStats
+from datarecord import DataRecord
 from process_data import ChannelDataProcessor, Metrics
 
 # We are working with 4 channels (Billy) [0], [1], [2], [3] as 4 index_channel values
@@ -25,55 +26,9 @@ EPOCH_LENGTH = 1
 OVERLAP_LENGTH = 0.8
 
 # Amount to 'shift' the start of each next consecutive epoch
-SHIFT_LENGTH = EPOCH_LENGTH - OVERLAP_LENGTH
+SHIFT_LENGTH = EPOCH_LENGTH - OVERLAP_LENGTH    
 
-mock_arr = list()
-
-
-class MetricStats:
-
-    def __init__(self, avg_deltas=0, avg_thetas=0, avg_alphas=0, avg_betas=0):
-        self.avg_deltas = avg_deltas
-        self.avg_thetas = avg_thetas
-        self.avg_alphas = avg_alphas
-        self.avg_betas = avg_betas
-
-
-class DataRecord:
-
-    def __init__(self):
-        self.deltas = []
-        self.thetas = []
-        self.alphas = []
-        self.betas = []
-        
-        fooofs = {}
-
-    def get_metrics(self, channel_index):
-        """
-
-        :return: a list of average powers for each channel
-        """
-
-        deltas = [l[channel_index] for l in self.deltas]
-        thetas = [l[channel_index] for l in self.thetas]
-        alphas = [l[channel_index] for l in self.alphas]
-        betas = [l[channel_index] for l in self.betas]
-
-        return MetricStats(avg_deltas=np.mean(deltas),
-                           avg_thetas=np.mean(thetas),
-                           avg_alphas=np.mean(alphas),
-                           avg_betas=np.mean(betas))
-
-
-class Band:
-    Delta = 0
-    Theta = 1
-    Alpha = 2
-    Beta = 3
-    
-
-class Tracker:
+class Calibrator:
     """
     Tracks PsychoPy Calibration and MuseLsL Data
     """
@@ -149,7 +104,7 @@ class Tracker:
                 c = ChannelDataProcessor(buffer_length=BUFFER_LENGTH,
                                          epoch_length=EPOCH_LENGTH,
                                          overlap_length=OVERLAP_LENGTH,
-                                         shift_length=SHIFT_LENGTH, fs=fs, band_cls=Band)
+                                         shift_length=SHIFT_LENGTH, fs=fs, band_cls=utils.Band)
 
                 c.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
                 metrics = np.zeros(NUM_CHANNELS)
@@ -168,13 +123,9 @@ class Tracker:
                     beta_sample.append(csbp[3])
 
                     # Run calculations on csbp to obtain desired metrics
-                    beta_metric = Metrics.beta_protocol(csbp, Band)
-                    # print("Alpha metric: {}".format(alpha_metric))
-
+                    beta_metric = Metrics.beta_protocol(csbp, utils.Band)
                     metrics[i] = beta_metric
 
-                # print("alpha metric for 4 sensors are separately: {}".format(metrics))
-                #print(" ")
                 d.deltas.append(delta_sample)
                 d.thetas.append(theta_sample)
                 d.alphas.append(alpha_sample)
@@ -183,8 +134,7 @@ class Tracker:
                 
         except KeyboardInterrupt:
             print('Closing!')
-
-            
+         
     def start_stage(self, mode=None, stage=0):
         """
             Start relax stage and record data.
@@ -198,21 +148,16 @@ class Tracker:
         if self.recordingProcess is None or ~self.recordingProcess.is_alive():
             self.isRecording = True
             self.keepRecording = True
-#             self.recordingProcess = Process(target=_record, args=(self.info, self.inlet, data_record,))
-#             arr = mock_arr
-            #self.recordingProcess = Process(target=self._start_recording, args=(self.inlet, self.info, data_record, ))
             self.recordingProcess = threading.Thread(target=self._record, args=(self.info, self.inlet, data_record, ))
             self.currentMode = mode
             self.currentStage = stage
-
             self.recordingProcess.start()
+            
         else:
             print("Unable to start process because already running")
 
     def end_stage(self, mode=None, stage=0):
 
-        #self.recordingProcess.terminate()
-        
         self.keepRecording = False
         self.currentMode = None
         self.currentStage = None
@@ -223,8 +168,9 @@ class Tracker:
 
     def create_fooof(self, mode=None, stage=0):
         # create freqs and powers
-        raise NotImplementedError
-        
+        pass
+
+
     def update_stage_threshold(self):
         self.threshold = self.get_threshold()
 
