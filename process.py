@@ -67,9 +67,15 @@ class ChannelDataProcessor:
         self.epoch_length = epoch_length
         self.overlap_length = overlap_length
 
+<<<<<<< HEAD:process.py
         self.n_win_test = utils._get_num_epoch(buffer_length=self.buffer_length,
                                                epoch_length=self.epoch_length,
                                                shift_length=self.shift_length)
+=======
+        self.n_win_test = utils.get_num_epoch(buffer_length=self.buffer_length,
+                                         epoch_length=self.epoch_length,
+                                         shift_length=self.shift_length)
+>>>>>>> refactor:process.py
 
         self.eeg_data = None  # Current Epoch EEG Data
 
@@ -91,8 +97,13 @@ class ChannelDataProcessor:
         :return:
         """
 
+<<<<<<< HEAD:process.py
         self.eeg_buffer = utils._create_eeg_buffer(fs=self.fs, buffer_length=self.buffer_length)
         self.filter_state = utils._create_filter_state()
+=======
+        self.eeg_buffer = utils.create_eeg_buffer(fs=self.fs, buffer_length=self.buffer_length)
+        self.filter_state = utils.create_filter_state()
+>>>>>>> refactor:process.py
 
     def _retrieve_channel_data(self, eeg_data, index_channel):
 
@@ -115,6 +126,18 @@ class ChannelDataProcessor:
                                          self.epoch_length * self.fs)
         return data_epoch
 
+    def get_smooth_band_powers(self,band_buffer):
+        """
+
+        :param band_buffer:
+        :return:
+        """
+
+        # Compute the average band powers for all epochs in buffer
+        # This helps to smooth out noise
+        smooth_band_powers = np.mean(band_buffer, axis=0)
+        return smooth_band_powers
+    
     def get_channel_smooth_band_powers(self, index_channel):
         """
 
@@ -135,13 +158,16 @@ class ChannelDataProcessor:
 
         # Compute band powers
         band_powers = utils.compute_band_powers(data_epoch, self.fs)
-        band_buffer, _ = utils.update_buffer(band_buffer,
-                                             np.asarray([band_powers]))
+        band_buffer, _ = utils.update_buffer(band_buffer, np.asarray([band_powers]))
 
        # print('Delta: ', band_powers[self.band_cls.Delta], ' Theta: ', band_powers[self.band_cls.Theta],
         #      ' Alpha: ', band_powers[self.band_cls.Alpha], ' Beta: ', band_powers[self.band_cls.Beta])
 
+<<<<<<< HEAD:process.py
         smooth_band_powers = utils._get_smooth_band_powers(band_buffer)
+=======
+        smooth_band_powers = self.get_smooth_band_powers(band_buffer)
+>>>>>>> refactor:process.py
 
         return smooth_band_powers
 

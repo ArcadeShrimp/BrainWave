@@ -60,3 +60,8 @@ class Metrics:
         beta_metric = smooth_band_powers[band_cls.Beta]/smooth_band_powers[band_cls.Theta]
         
         return beta_metric
+    
+    @staticmethod
+    def get_ratios(sm_b_pws, bd_cls):
+        
+        return alpha_delta_ratio(sm_b_pws, bd_cls),alpha_theta_ratio(sm_b_pws, bd_cls), alpha_beta_ratio(sm_b_pws, bd_cls), beta_theta_ratio(sm_b_pws, bd_cls)
