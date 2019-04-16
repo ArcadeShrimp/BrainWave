@@ -4,10 +4,7 @@ import utils
 class DataRecord:
 
     def __init__(self):
-        self.deltas = []
-        self.thetas = []
-        self.alphas = []
-        self.betas = []
+        self.matricies = []
         
         fooofs = {}
 
@@ -17,6 +14,7 @@ class DataRecord:
         :return: a list of average powers for each channel
         """
 
+        
         deltas = [l[channel_index] for l in self.deltas]
         thetas = [l[channel_index] for l in self.thetas]
         alphas = [l[channel_index] for l in self.alphas]
@@ -27,6 +25,7 @@ class DataRecord:
                            avg_alphas=np.mean(alphas),
                            avg_betas=np.mean(betas))
 
+    def get
 class MetricStats:
 
     def __init__(self, avg_deltas=0, avg_thetas=0, avg_alphas=0, avg_betas=0):

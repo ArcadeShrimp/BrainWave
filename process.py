@@ -67,7 +67,7 @@ class ChannelDataProcessor:
         self.epoch_length = epoch_length
         self.overlap_length = overlap_length
 
-        self.n_win_test = _get_num_epoch(buffer_length=self.buffer_length,
+        self.n_win_test = utils.get_num_epoch(buffer_length=self.buffer_length,
                                          epoch_length=self.epoch_length,
                                          shift_length=self.shift_length)
 
@@ -91,8 +91,8 @@ class ChannelDataProcessor:
         :return:
         """
 
-        self.eeg_buffer = _create_eeg_buffer(fs=self.fs, buffer_length=self.buffer_length)
-        self.filter_state = _create_filter_state()
+        self.eeg_buffer = utils.create_eeg_buffer(fs=self.fs, buffer_length=self.buffer_length)
+        self.filter_state = utils.create_filter_state()
 
     def _retrieve_channel_data(self, eeg_data, index_channel):
 
@@ -116,16 +116,16 @@ class ChannelDataProcessor:
         return data_epoch
 
     def _get_smooth_band_powers(band_buffer):
-    """
+        """
 
-    :param band_buffer:
-    :return:
-    """
+        :param band_buffer:
+        :return:
+        """
 
-    # Compute the average band powers for all epochs in buffer
-    # This helps to smooth out noise
-    smooth_band_powers = np.mean(band_buffer, axis=0)
-    return smooth_band_powers
+        # Compute the average band powers for all epochs in buffer
+        # This helps to smooth out noise
+        smooth_band_powers = np.mean(band_buffer, axis=0)
+        return smooth_band_powers
     
     def get_channel_smooth_band_powers(self, index_channel):
         """

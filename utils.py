@@ -174,7 +174,7 @@ def get_last_data(data_buffer, newest_samples):
 
     return new_buffer
 
-def _create_eeg_buffer(fs, buffer_length):
+def create_eeg_buffer(fs, buffer_length):
     """ Initialize raw EEG data buffer
     :param fs:
     :return:
@@ -183,7 +183,7 @@ def _create_eeg_buffer(fs, buffer_length):
     return eeg_buffer
 
 
-def _create_filter_state():
+def create_filter_state():
     """ for use with the notch filter
 
     :return:
@@ -192,7 +192,7 @@ def _create_filter_state():
     return filter_state
 
 
-def _get_num_epoch(buffer_length, epoch_length, shift_length):
+def get_num_epoch(buffer_length, epoch_length, shift_length):
     """ Compute the number of epochs in "buffer_length"
 
     :param buffer_length:

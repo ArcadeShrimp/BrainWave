@@ -8,7 +8,9 @@ from pylsl import StreamInlet, resolve_byprop
 import json
 import warnings
 import utils
-from process_data import ChannelDataProcessor, Metrics
+import metrics
+from process import ChannelDataProcessor
+
 
 # We are working with 4 channels (Billy) [0], [1], [2], [3] as 4 index_channel values
 NUM_CHANNELS = 5
@@ -39,6 +41,7 @@ class Calibrator:
         """
         Initialize with inlet.
         :param inlet:
+        :channel_index: list of channels 
         """
 
         self.keepRecording = False
@@ -97,7 +100,6 @@ class Calibrator:
 
                 # Obtain EEG data from the LSL stream
                 eeg_data, timestamp = _acquire_eeg_data(inlet)
-                #             eeg_data, timestamp = _acquire_eeg_data_mock()
 
                 c = ChannelDataProcessor(buffer_length=BUFFER_LENGTH,
                                          epoch_length=EPOCH_LENGTH,
@@ -105,29 +107,30 @@ class Calibrator:
                                          shift_length=SHIFT_LENGTH, fs=fs, band_cls=Band)
 
                 c.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
-                metrics = np.zeros(NUM_CHANNELS)
-
-                delta_sample = []
-                theta_sample = []
-                alpha_sample = []
-                beta_sample = []
-                for i in range(NUM_CHANNELS):  # Iterate through all separate channels
+                metrics = {
+                    "delta": None,
+                    "theta": None,
+                    "alpha": None,
+                    "beta": None,
+                    "alpha/delta": None,
+                    "alpha/theta": None,
+                    "alpha/beta": None,
+                    "beta/theta": None} 
+                    
+                
+                for channel in range(NUM_CHANNELS):  # Iterate through all separate channels
 
                     # Record channel smooth band power
-                    csbp = c.get_channel_smooth_band_powers(i)
-                    delta_sample.append(csbp[0])
-                    theta_sample.append(csbp[1])
-                    alpha_sample.append(csbp[2])
-                    beta_sample.append(csbp[3])
+                    csbp = c.get_channel_smooth_band_powers(channel)
+                    
+                    #acquires power values for interative channel
+                    metrics[channel][0:4] = csbp[0:4]
 
-                    # Run calculations on csbp to obtain desired metrics
-                    beta_metric = Metrics.beta_protocol(csbp, Band)
-                    metrics[i] = beta_metric
+                    # acquire ratio measures for channel
+                    
+                    metrics[channel][4:] = Metrics.get_ratios(csbp, utils.Band)
 
-                d.deltas.append(delta_sample)
-                d.thetas.append(theta_sample)
-                d.alphas.append(alpha_sample)
-                d.betas.append(beta_sample)
+                d.matricies.append(metrics)
 
                 
         except KeyboardInterrupt:
@@ -161,8 +164,9 @@ class Calibrator:
         self.currentStage = None
 
         data_record: DataRecord = self.data_records[(mode, stage)]
+            
+        
         m: MetricStats = data_record.get_metrics(channel_index=self.channelIndex)
-        print("average theta: {}".format(m.avg_thetas))
 
     def create_fooof(self, mode=None, stage=0):
         # create freqs and powers
