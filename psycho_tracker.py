@@ -9,6 +9,7 @@ import json
 import warnings
 import utils
 import metrics
+from data_record import DataRecord
 from process import ChannelDataProcessor
 
 
@@ -27,6 +28,12 @@ OVERLAP_LENGTH = 0.8
 
 # Amount to 'shift' the start of each next consecutive epoch
 SHIFT_LENGTH = EPOCH_LENGTH - OVERLAP_LENGTH    
+
+class Band:
+    Delta = 0
+    Theta = 1
+    Alpha = 2
+    Beta = 3
 
 class Calibrator:
     """
@@ -124,11 +131,11 @@ class Calibrator:
                     csbp = c.get_channel_smooth_band_powers(channel)
                     
                     #acquires power values for interative channel
-                    metrics[channel][0:4] = csbp[0:4]
+                       #metrics[channel][0:4] = csbp[0:4]
 
                     # acquire ratio measures for channel
                     
-                    metrics[channel][4:] = Metrics.get_ratios(csbp, utils.Band)
+                       #metrics[channel][4:] = Metrics.get_ratios(csbp, utils.Band)
 
                 d.matricies.append(metrics)
 

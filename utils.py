@@ -18,12 +18,6 @@ from scipy.signal import butter, lfilter, lfilter_zi
 
 NOTCH_B, NOTCH_A = butter(4, np.array([55, 65]) / (256 / 2), btype='bandstop')
 
-class Band:
-    Delta = 0
-    Theta = 1
-    Alpha = 2
-    Beta = 3
-
 def epoch(data, samples_epoch, samples_overlap=0):
     """Extract epochs from a time series.
     Given a 2D array of the shape [n_samples, n_channels]
@@ -204,4 +198,12 @@ def get_num_epoch(buffer_length, epoch_length, shift_length):
                               shift_length + 1))
     return n_win_test
 
+def acquire_eeg_data(_inlet,fs):
+    """ Pull EEG data from inlet and return.
 
+    :return: tuple: _eeg_data, _timestamp
+    """
+    SHIFT_LENGTH = .2
+    _eeg_data, _timestamp = _inlet.pull_chunk(
+        timeout=1, max_samples=int(SHIFT_LENGTH * fs))
+    return _eeg_data, _timestamp

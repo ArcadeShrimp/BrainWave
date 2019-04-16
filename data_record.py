@@ -1,19 +1,24 @@
 """ A DataRecord holds information for a single PsychoPy Trial, ex) Relax_1, Focus_1"""
 import utils
+import numpy as np
 
 class DataRecord:
 
     def __init__(self):
         self.matricies = []
-        
         fooofs = {}
+        
+        self.deltas = []
+        self.thetas = []
+        self.alphas = []
+        self.betas = []
+        
 
     def get_metrics(self, channel_index):
         """
 
         :return: a list of average powers for each channel
         """
-
         
         deltas = [l[channel_index] for l in self.deltas]
         thetas = [l[channel_index] for l in self.thetas]
@@ -25,7 +30,7 @@ class DataRecord:
                            avg_alphas=np.mean(alphas),
                            avg_betas=np.mean(betas))
 
-    def get
+    #def get
 class MetricStats:
 
     def __init__(self, avg_deltas=0, avg_thetas=0, avg_alphas=0, avg_betas=0):

@@ -23,7 +23,7 @@ import sys  # to get file system encoding
 
 sys.path.append('../')
 
-import command
+import psycho_tracker
 
 # constants
 RELAX = 'relax'
@@ -39,7 +39,7 @@ _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 
 
-def run_psychopy(cmd: command.Tracker):
+def run_psychopy(cal: psycho_tracker.Calibrator):
 
     #################
     ### Start Box ###
@@ -126,7 +126,7 @@ def run_psychopy(cmd: command.Tracker):
     # Initialize components for Routine "relax"
     relaxing_image = visual.ImageStim(
         win=win, name='relaxing_image',
-        image='sin', mask=None,
+        image='./pics/landscape1.jpg', mask=None,
         ori=0, pos=(0, 0), size=(1.7, 1),
         color=[1,1,1], colorSpace='rgb', opacity=1,
         flipHoriz=False, flipVert=False,
@@ -135,7 +135,7 @@ def run_psychopy(cmd: command.Tracker):
     # Initialize components for Routine "focus_cue"
     whereswaldo = visual.ImageStim(
         win=win, name='whereswaldo',
-        image='wheres-waldo.jpg', mask=None,
+        image='./pics/wheres-waldo.jpg', mask=None,
         ori=0, pos=(0, 0), size=(0.7, 0.5),
         color=[1,1,1], colorSpace='rgb', opacity=1,
         flipHoriz=False, flipVert=False,
@@ -144,7 +144,7 @@ def run_psychopy(cmd: command.Tracker):
     # Initialize components for Routine "focus"
     focus_image = visual.ImageStim(
         win=win, name='focus_image',
-        image='sin', mask=None,
+        image='./pics/waldo1.png', mask=None,
         ori=0, pos=(0, 0), size=(1.7, 1),
         color=[1,1,1], colorSpace='rgb', opacity=1,
         flipHoriz=False, flipVert=False,
@@ -274,27 +274,25 @@ def run_psychopy(cmd: command.Tracker):
     #####################
 
     # set up handler to look after randomisation of conditions etc
-    trials = data.TrialHandler(nReps=1, method='random',
-        extraInfo=expInfo, originPath=-1,
-        trialList=data.importConditions('images.xlsx'),
-        seed=None, name='trials')
-    thisExp.addLoop(trials)  # add the loop to the experiment
-    thisTrial = trials.trialList[0]  # so we can initialise stimuli with some values
-    # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
-    if thisTrial != None:
-        for paramName in thisTrial:
-            exec('{} = thisTrial[paramName]'.format(paramName))
+#     trials = data.TrialHandler(nReps=1, method='random',
+#         extraInfo=expInfo, originPath=-1,
+#         seed=None, name='trials')
+#     thisExp.addLoop(trials)  # add the loop to the experiment
+#     thisTrial = trials.trialList[0]  # so we can initialise stimuli with some values
+#     # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
+#     if thisTrial != None:
+#         for paramName in thisTrial:
+#             exec('{} = thisTrial[paramName]'.format(paramName))
 
     trialCounter = 0
     relaxTrialCounter = 0
     focusTrialCounter = 0
-    for thisTrial in trials:
+    for thisTrial in range(3):
         trialCounter += 1
-        currentLoop = trials
         # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
-        if thisTrial != None:
-            for paramName in thisTrial:
-                exec('{} = thisTrial[paramName]'.format(paramName))
+#         if thisTrial != None:
+#             for paramName in thisTrial:
+#                 exec('{} = thisTrial[paramName]'.format(paramName))
 
 
         #########################
@@ -349,7 +347,7 @@ def run_psychopy(cmd: command.Tracker):
                 thisComponent.status = NOT_STARTED
 
 
-        cmd.start_stage(mode=RELAX, stage=trialCounter)
+        cal.start_stage(mode=RELAX, stage=trialCounter)
         routineTimer.add(10.000000)
         continueRoutine = True
         # -------Start Routine "relax"-------
@@ -360,7 +358,7 @@ def run_psychopy(cmd: command.Tracker):
 
             # check for quit (typically the Esc key)
             if endExpNow or event.getKeys(keyList=["escape"]):
-                cmd.end_stage(mode=RELAX, stage=trialCounter)
+                cal.end_stage(mode=RELAX, stage=trialCounter)
                 win.close()
                 core.quit()
 
@@ -369,7 +367,7 @@ def run_psychopy(cmd: command.Tracker):
                 win.flip()
 
         relaxTrialCounter += 1
-        cmd.end_stage(mode=RELAX, stage=trialCounter)
+        cal.end_stage(mode=RELAX, stage=trialCounter)
         
         # -------Ending Routine "relax"-------
         for thisComponent in relaxComponents:
@@ -428,7 +426,7 @@ def run_psychopy(cmd: command.Tracker):
             if hasattr(thisComponent, 'status'):
                 thisComponent.status = NOT_STARTED
 
-        cmd.start_stage(mode=FOCUS, stage=trialCounter)
+        cal.start_stage(mode=FOCUS, stage=trialCounter)
         routineTimer.add(7.000000)
         continueRoutine = True
         # -------Start Routine "focus"-------
@@ -439,7 +437,7 @@ def run_psychopy(cmd: command.Tracker):
 
             # check for quit (typically the Esc key)
             if endExpNow or event.getKeys(keyList=["escape"]):
-                cmd.end_stage(mode=RELAX, stage=trialCounter)
+                cal.end_stage(mode=RELAX, stage=trialCounter)
                 win.close()
                 core.quit()
 
@@ -448,7 +446,7 @@ def run_psychopy(cmd: command.Tracker):
                 win.flip()
 
         focusTrialCounter += 1
-        cmd.end_stage(mode=FOCUS, stage=trialCounter)
+        cal.end_stage(mode=FOCUS, stage=trialCounter)
         
         # -------Ending Routine "focus"-------
         for thisComponent in focusComponents:

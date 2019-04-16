@@ -115,7 +115,7 @@ class ChannelDataProcessor:
                                          self.epoch_length * self.fs)
         return data_epoch
 
-    def _get_smooth_band_powers(band_buffer):
+    def get_smooth_band_powers(self,band_buffer):
         """
 
         :param band_buffer:
@@ -152,7 +152,7 @@ class ChannelDataProcessor:
        # print('Delta: ', band_powers[self.band_cls.Delta], ' Theta: ', band_powers[self.band_cls.Theta],
         #      ' Alpha: ', band_powers[self.band_cls.Alpha], ' Beta: ', band_powers[self.band_cls.Beta])
 
-        smooth_band_powers = _get_smooth_band_powers(band_buffer)
+        smooth_band_powers = self.get_smooth_band_powers(band_buffer)
 
         return smooth_band_powers
 
