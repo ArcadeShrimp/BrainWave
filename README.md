@@ -11,10 +11,23 @@ directs users to relax and focus. This trains our system to understand the users
 determines 'focused' vs 'non-focused' states.
 
 ## Code Structure
-Wave.ipynb : Main 
-command.py : The Tracker class and other metric collection things
-PsychoPy_Code/BrainWave.py : runPsychopy() to run the calibration visuals
+Wave.ipynb        : Main 
 
+psycho_tracker.py : The Calibration class and other metric collection things 
+
+data_record.py    : Data record class for Calibration class to hold 
+
+utils.py          : Collects data from inlet 
+
+process.py        : Returns the smooth band powers given the eeg_data 
+
+metrics.py        : Calculates and returns the metrics (e.g. alpha, theta, beta, delta) given the smooth band powers
+
+PsychoPy_Code/PsychoRun.py : run_psychopy() to run the calibration visuals
+
+PsychoPy_Code/pics : The images that PsychoPy uses 
+
+PsychoPy_Code/data : The data recoreded by PsychoPy records (not necessary) 
 
 
 ## PsychoPy_Code
