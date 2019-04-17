@@ -39,10 +39,6 @@ class Calibrator:
     """
     Tracks PsychoPy Calibration and MuseLsL Data
     """
-
-    # to hold the eeg data
-    # eeg_data = {('relax',1) : list(), "relax2": list(), "relax3": list(), "focus1": list(), "focus2": list(), "focus3": list()}
-    # mydata = list()
     
     def __init__(self, inlet, info, channel_index):
         """
@@ -80,6 +76,7 @@ class Calibrator:
         :return:
         """
 
+        ## Move to utils
         def get_fs(_info):
             return int(_info.nominal_srate())
 
