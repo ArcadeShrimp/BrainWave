@@ -9,7 +9,7 @@ import json
 import warnings
 import utils
 import metrics
-from data_record import DataRecord
+from data_record import DataRecord, MetricStats
 from process import ChannelDataProcessor
 
 
