@@ -1,5 +1,6 @@
 """ The metrics used to analyze neural data"""
 
+
 class Metrics:
     """
     3.3 COMPUTE NEUROFEEDBACK METRICS
@@ -64,4 +65,7 @@ class Metrics:
     @staticmethod
     def get_ratios(sm_b_pws, bd_cls):
         
-        return alpha_delta_ratio(sm_b_pws, bd_cls),alpha_theta_ratio(sm_b_pws, bd_cls), alpha_beta_ratio(sm_b_pws, bd_cls), beta_theta_ratio(sm_b_pws, bd_cls)
+        return Metrics.alpha_delta_ratio(sm_b_pws, bd_cls), \
+               Metrics.alpha_theta_ratio(sm_b_pws, bd_cls), \
+               Metrics.alpha_beta_ratio(sm_b_pws, bd_cls), \
+               Metrics.beta_theta_ratio(sm_b_pws, bd_cls)
