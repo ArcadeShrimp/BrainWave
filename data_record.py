@@ -13,6 +13,7 @@ class DataRecord:
         self.alphas = []
         self.betas = []
         
+        
 
     def get_metrics(self, channel_index):
         """

@@ -18,6 +18,15 @@ from scipy.signal import butter, lfilter, lfilter_zi
 
 NOTCH_B, NOTCH_A = butter(4, np.array([55, 65]) / (256 / 2), btype='bandstop')
 
+channel = dict(
+    TP9 = 0,
+    FP1 = 1,
+    FP2 = 2,
+    TP10 = 3,
+    DRL = 4)
+    
+chans = set("TP9", "TP10","FP1","FP2")
+
 def epoch(data, samples_epoch, samples_overlap=0):
     """Extract epochs from a time series.
     Given a 2D array of the shape [n_samples, n_channels]

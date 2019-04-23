@@ -111,16 +111,8 @@ class Calibrator:
                                          shift_length=SHIFT_LENGTH, fs=fs, band_cls=Band)
 
                 c.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
-                metrics = {
-                    "delta": None,
-                    "theta": None,
-                    "alpha": None,
-                    "beta": None,
-                    "alpha/delta": None,
-                    "alpha/theta": None,
-                    "alpha/beta": None,
-                    "beta/theta": None} 
-                    
+                
+#                 multiIndex    
                 
                 for channel in range(NUM_CHANNELS):  # Iterate through all separate channels
 

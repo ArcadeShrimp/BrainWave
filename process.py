@@ -134,6 +134,7 @@ class ChannelDataProcessor:
         :return: smooth_band_powers
         """
 
+# make method later
         # Get eeg_buffer and filter_state for this channel
         eeg_buffer, filter_state = self._retrieve_channel_data(eeg_data=self.eeg_data, index_channel=index_channel)
 
@@ -156,4 +157,32 @@ class ChannelDataProcessor:
 
         return smooth_band_powers
 
+#     def get_all_smooth_band_powers(self):
+        
+#         powers = []
+        
+#         for
+        
+        
+#                 for channel in range(NUM_CHANNELS):  # Iterate through all separate channels
+
+#                     # Record channel smooth band power
+#                     csbp = c.get_channel_smooth_band_powers(channel)
+                    
+#                     #acquires power values for interative channel
+#                        #metrics[channel][0:4] = csbp[0:4]
+
+#                     # acquire ratio measures for channel
+                    
+#                        #metrics[channel][4:] = Metrics.get_ratios(csbp, utils.Band)
+        
+#         metrics = {
+#                     "delta": None,
+#                     "theta": None,
+#                     "alpha": None,
+#                     "beta": None,
+#                     "alpha/delta": None,
+#                     "alpha/theta": None,
+#                     "alpha/beta": None,
+#                     "beta/theta": None} 
 
