@@ -2,6 +2,7 @@
 import utils
 import numpy as np  # Module that simplifies computations on matrices
 import metrics
+import pandas as pd
 
 class DataProcessor:
     """
@@ -53,7 +54,9 @@ class DataProcessor:
         self.band_cls = band_cls  # To store Band -> Number
         
         self.chans = chans
-        
+
+        self.bands = ["delta", "theta", "alpha", "beta"]
+
         self.df = list()
 
     def feed_new_data(self, eeg_data=None):
@@ -111,6 +114,13 @@ class DataProcessor:
         # Compute band powers
         band_powers = utils.compute_band_powers(data_epoch, self.fs)
         return band_powers
+
+    def get_dataframe(self):
+        raise NotImplementedError
+        multi_index = pd.MultiIndex.from_arrays(arrays=[self.chans, self.bands], names=["channel", "band"])
+        df = pd.DataFrame().set
+        # for p in self.df:
+
         
     def append_metrics(self):
         """
@@ -118,7 +128,7 @@ class DataProcessor:
         :param index_channel: the channel to work on. Example: [0]
         :return: smooth_band_powers
         """
-        bands = ["delta", "theta", "alpha", "beta"]
+        bands = self.bands
         
         res = dict()
         for channel in self.chans:  # Iterate through all separate channels
