@@ -1,5 +1,7 @@
+""" This file keeps synchronizes with PsychoPy and categorizes relax and focus
+    states. """
 from multiprocessing import Process
-import threading 
+import threading
 import time
 
 from muselsl import *
@@ -11,35 +13,23 @@ import utils
 import metrics
 from data_record import DataRecord, MetricStats
 from process import ChannelDataProcessor
-
-
-# We are working with 4 channels (Billy) [0], [1], [2], [3] as 4 index_channel values
-NUM_CHANNELS = 4
-
-# Length of the EEG data buffer (in seconds)
-# This buffer will hold last n seconds of data and be used for calculations
-BUFFER_LENGTH = 5
-
-# Length of the epochs used to compute the FFT (in seconds)
-EPOCH_LENGTH = 1
-
-# Amount of overlap between two consecutive epochs (in seconds)
-OVERLAP_LENGTH = 0.8
-
-# Amount to 'shift' the start of each next consecutive epoch
-SHIFT_LENGTH = EPOCH_LENGTH - OVERLAP_LENGTH    
-
-class Band:
-    Delta = 0
-    Theta = 1
-    Alpha = 2
-    Beta = 3
+import settings
 
 class Calibrator:
     """
     Tracks PsychoPy Calibration and MuseLsL Data
+    keepRecording:
+    currentMode:
+    currentStage:
+    readyToRecord:
+    isRecording:
+    recordingProcess:
+    inlet:
+    info:
+    threshold: A matrix that col
+
     """
-    
+
     def __init__(self, inlet, info, channel_index):
         """
         Initialize with inlet.
@@ -62,11 +52,10 @@ class Calibrator:
 
         self.inlet = inlet
         self.info = info
-        self.data_records = dict()
         self.threshold = None
-        self.channelIndex = channel_index
+        #self.channelIndex = channel_index
 
-        
+
 # we can use self.info instead
     def _record(self, info, inlet, d: DataRecord):
         """
@@ -100,7 +89,7 @@ class Calibrator:
             # The following loop acquires data, computes band powers, and calculates neurofeedback metrics based on those band powers
             while self.keepRecording:
                 #
-                
+
                 """ 3.1 ACQUIRE DATA """
 
                 # Obtain EEG data from the LSL stream
@@ -112,34 +101,34 @@ class Calibrator:
                                          shift_length=SHIFT_LENGTH, fs=fs, band_cls=Band)
 
                 c.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
-                
-#                 multiIndex    
-                
+
+#                 multiIndex
+
                 for channel in range(NUM_CHANNELS):  # Iterate through all separate channels
 
                     # Record channel smooth band power
                     csbp = c.get_channel_smooth_band_powers(channel)
-                    
+
                     #acquires power values for interative channel
                        #metrics[channel][0:4] = csbp[0:4]
 
                     # acquire ratio measures for channel
-                    
+
                        #metrics[channel][4:] = Metrics.get_ratios(csbp, utils.Band)
 
                 d.matricies.append(metrics)
 
-                
+
         except KeyboardInterrupt:
             print('Closing!')
-         
+
     def start_stage(self, mode=None, stage=0):
         """
             Start relax stage and record data.
 
         :return:
         """
-        
+
         data_record = DataRecord()
         self.data_records[(mode, stage)] = data_record
 
@@ -150,7 +139,7 @@ class Calibrator:
             self.currentMode = mode
             self.currentStage = stage
             self.recordingProcess.start()
-            
+
         else:
             print("Unable to start process because already running")
 
@@ -161,8 +150,8 @@ class Calibrator:
         self.currentStage = None
 
         data_record: DataRecord = self.data_records[(mode, stage)]
-            
-        
+
+
         m: MetricStats = data_record.get_metrics(channel_index=self.channelIndex)
 
     def create_fooof(self, mode=None, stage=0):

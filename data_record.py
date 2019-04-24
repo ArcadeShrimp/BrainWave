@@ -1,25 +1,56 @@
 """ A DataRecord holds information for a single PsychoPy Trial, ex) Relax_1, Focus_1"""
 import utils
 import numpy as np
+import pandas as pd
+import settings
 
 class DataRecord:
 
+    ''' 3D dataframe with Channel, Metric, and Timepoint as the axis '''
+
     def __init__(self):
         self.matricies = []
-        
+
         self.deltas = []
         self.thetas = []
         self.alphas = []
         self.betas = []
-        
-        
+
+        self.cache = list()
+    #
+    #     # Data frame  Rows - Channels ; Columns - Metric
+    #     multi_index = pd.MultiIndex.from_arrays(arrays=[
+    #             [c.name for c in utils.Channel],
+    #             [b.name for b in utils.Bands]
+    #         ], names=["channel", "band"])
+    #     df = DataFrame(index=multi_index)
+    #
+    # def test_df(self):
+    #     data_record = DataRecord()
+    #     data_record.cache.append( {
+    #         ("TP9", "DELTA"): 0
+    #     } )
+    #     data_record.cache.append( {
+    #         ("TP9", "DELTA"): 1
+    #     } )
+    #     df = data_record.get_dataframe()
+    #
+    # def get_dataframe(self):
+    #     raise Error
+    #
+    # def append_metrics(self, res):
+    #
+    #     self.data_record.cache.append(res)  # TODO: change to dataframe
+    #
+
+        # df = pd.DataFrame()
 
     def get_metrics(self, channel_index):
         """
 
         :return: a list of average powers for each channel
         """
-        
+
         deltas = [l[channel_index] for l in self.deltas]
         thetas = [l[channel_index] for l in self.thetas]
         alphas = [l[channel_index] for l in self.alphas]
@@ -38,5 +69,3 @@ class MetricStats:
         self.avg_thetas = avg_thetas
         self.avg_alphas = avg_alphas
         self.avg_betas = avg_betas
-
-

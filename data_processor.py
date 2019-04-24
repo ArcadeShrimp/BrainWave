@@ -1,6 +1,7 @@
-
+import pandas as pd
 import utils
 import numpy as np  # Module that simplifies computations on matrices
+import pandas
 import metrics
 
 class DataProcessor:
@@ -51,10 +52,14 @@ class DataProcessor:
         self.filter_state = None
 
         self.band_cls = band_cls  # To store Band -> Number
-        
+
         self.chans = chans
-        
-        self.df = list()
+
+
+         # for p in self.df:
+        self.df = pd.DataFrame()
+
+        self.data_record = DataRecord()
 
     def feed_new_data(self, eeg_data=None):
         self._setup_buffers()
@@ -101,7 +106,7 @@ class DataProcessor:
         # This helps to smooth out noise
         smooth_band_powers = np.mean(band_buffer, axis=0)
         return smooth_band_powers
-    
+
     def _get_band_powers(self, index_channel):
          # Get eeg_buffer and filter_state for this channel
         eeg_buffer, filter_state = self._retrieve_channel_data(eeg_data=self.eeg_data, index_channel=index_channel)
@@ -111,72 +116,30 @@ class DataProcessor:
         # Compute band powers
         band_powers = utils.compute_band_powers(data_epoch, self.fs)
         return band_powers
-        
+
     def append_metrics(self):
         """
 
         :param index_channel: the channel to work on. Example: [0]
         :return: smooth_band_powers
         """
-        
-        
+
+
         res = dict()
         for channel in utils.Channel:  # Iterate through all separate channels
 
-            index_channel = channel.value
-            
+
             # Initialize the band power buffer (for plotting)
             # bands will be ordered: [delta, theta, alpha, beta]
-            band_powers = self._get_band_powers(index_channel)
+            band_powers = self._get_band_powers(channel.value)
             band_buffer = np.zeros((self.n_win_test, 4))
             band_buffer, _ = utils.update_buffer(band_buffer, np.asarray([band_powers]))
 
             # Record channel smooth band power
             csbp = self.get_smooth_band_powers(band_buffer)
 
-            
-            
             #acquires power values for interative channel
-            for i in range(len(bands)):
-                band = bands[i]
+            for band in utils.Band:
+
                 # eg. res[("TP1", "alpha")] = cbsp[0]
-                res[(channel, band)] = csbp[i]
-
-
-            # acquire ratio measures for channel
-            
-#             metrics[channel][4:] = Metrics.get_ratios(csbp, utils.Band)
-            self.df.append(res)  # TODO: change to dataframe 
-
-#         return red
-
-#     def 
-#     def get_all_smooth_band_powers(self):
-        
-#         powers = []
-        
-#         for
-        
-        
-#                 for channel in range(NUM_CHANNELS):  # Iterate through all separate channels
-
-#                     # Record channel smooth band power
-#                     csbp = c.get_channel_smooth_band_powers(channel)
-                    
-#                     #acquires power values for interative channel
-#                        #metrics[channel][0:4] = csbp[0:4]
-
-#                     # acquire ratio measures for channel
-                    
-#                        #metrics[channel][4:] = Metrics.get_ratios(csbp, utils.Band)
-        
-#         metrics = {
-#                     "delta": None,
-#                     "theta": None,
-#                     "alpha": None,
-#                     "beta": None,
-#                     "alpha/delta": None,
-#                     "alpha/theta": None,
-#                     "alpha/beta": None,
-#                     "beta/theta": None} 
-
+                res[(channel.name, band.name)] = csbp[band.value]
