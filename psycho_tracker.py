@@ -14,7 +14,7 @@ from process import ChannelDataProcessor
 
 
 # We are working with 4 channels (Billy) [0], [1], [2], [3] as 4 index_channel values
-NUM_CHANNELS = 5
+NUM_CHANNELS = 4
 
 # Length of the EEG data buffer (in seconds)
 # This buffer will hold last n seconds of data and be used for calculations
@@ -67,6 +67,7 @@ class Calibrator:
         self.channelIndex = channel_index
 
         
+# we can use self.info instead
     def _record(self, info, inlet, d: DataRecord):
         """
 

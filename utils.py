@@ -9,6 +9,7 @@ import os
 import sys
 from tempfile import gettempdir
 from subprocess import call
+from enum import Enum
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -18,14 +19,20 @@ from scipy.signal import butter, lfilter, lfilter_zi
 
 NOTCH_B, NOTCH_A = butter(4, np.array([55, 65]) / (256 / 2), btype='bandstop')
 
-channel = dict(
-    TP9 = 0,
-    FP1 = 1,
-    FP2 = 2,
-    TP10 = 3,
-    DRL = 4)
+class Channel(Enum):
+    TP9 = 0
+    FP1 = 1
+    FP2 = 2
+    TP10 = 3
+    DRL = 4
     
-chans = set("TP9", "TP10","FP1","FP2")
+#chans = set("TP9", "TP10","FP1","FP2")
+
+class Band(Enum):
+    DELTA = 0
+    THETA = 1
+    ALPHA = 2
+    BETA = 3
 
 def epoch(data, samples_epoch, samples_overlap=0):
     """Extract epochs from a time series.

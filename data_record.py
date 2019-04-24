@@ -6,7 +6,6 @@ class DataRecord:
 
     def __init__(self):
         self.matricies = []
-        fooofs = {}
         
         self.deltas = []
         self.thetas = []

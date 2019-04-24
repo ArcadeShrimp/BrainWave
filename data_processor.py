@@ -118,19 +118,17 @@ class DataProcessor:
         :param index_channel: the channel to work on. Example: [0]
         :return: smooth_band_powers
         """
-        bands = ["delta", "theta", "alpha", "beta"]
+        
         
         res = dict()
-        for channel in self.chans:  # Iterate through all separate channels
+        for channel in utils.Channel:  # Iterate through all separate channels
 
-            index_channel = utils.channel[channel]
+            index_channel = channel.value
             
             # Initialize the band power buffer (for plotting)
             # bands will be ordered: [delta, theta, alpha, beta]
             band_powers = self._get_band_powers(index_channel)
             band_buffer = np.zeros((self.n_win_test, 4))
-
-
             band_buffer, _ = utils.update_buffer(band_buffer, np.asarray([band_powers]))
 
             # Record channel smooth band power
