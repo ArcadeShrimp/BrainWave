@@ -3,25 +3,15 @@ import utils
 import numpy as np  # Module that simplifies computations on matrices
 import pandas
 import metrics
+import settings
 
 class DataProcessor:
+    """ Records and holds data from inlet
     """
 
-    Example usage:
-        c = DataProcessor(...)               # Specify data-recording parameters
-        c.feed_new_data(eeg_data=eeg_data)          # Feed new data generated in the epoch
-        for channel in [0,1,2,3]:                   # Iterate through all separate channels
+    #def __init__(self, buffer_length=5, epoch_length=1, overlap_length=0.8,shift_length=None, fs=None, band_cls=None, chans=None):
+    def __init__(self, shift_length=None, fs=None, band_cls=None, chans=None):
 
-            # Record channel smooth band power
-            csbp = c.get_channel_smooth_band_powers(channel)
-
-            # Run calculations on csbp to obtain desired metrics
-            a = Metrics.alpha_protocol(csbp, Band)
-            print("Alpha metric: {}".format(a))
-
-    """
-
-    def __init__(self, buffer_length=5, epoch_length=1, overlap_length=0.8, shift_length=None, fs=None, band_cls=None, chans=None):
         """
 
         :param buffer_length: Length of the EEG data buffer (in seconds)
@@ -33,11 +23,6 @@ class DataProcessor:
         :param band_cls: enum to store Band -> Number
         :param chans: channels eg. ["TP1", "TP9", ... ]
         """
-        assert shift_length is not None
-        self.shift_length = shift_length
-        self.buffer_length = buffer_length
-        self.epoch_length = epoch_length
-        self.overlap_length = overlap_length
 
         self.n_win_test = utils.get_num_epoch(buffer_length=self.buffer_length,
                                          epoch_length=self.epoch_length,
