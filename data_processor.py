@@ -128,3 +128,6 @@ class DataProcessor:
 
                 # eg. res[("TP1", "alpha")] = cbsp[0]
                 res[(channel.name, band.name)] = csbp[band.value]
+
+        # TODO: check that res is correct
+        print(res)
