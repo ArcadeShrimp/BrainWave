@@ -17,33 +17,21 @@ class DataRecord:
         self.betas = []
 
         self.cache = list()
-    #
-    #     # Data frame  Rows - Channels ; Columns - Metric
-    #     multi_index = pd.MultiIndex.from_arrays(arrays=[
-    #             [c.name for c in utils.Channel],
-    #             [b.name for b in utils.Bands]
-    #         ], names=["channel", "band"])
-    #     df = DataFrame(index=multi_index)
-    #
-    # def test_df(self):
-    #     data_record = DataRecord()
-    #     data_record.cache.append( {
-    #         ("TP9", "DELTA"): 0
-    #     } )
-    #     data_record.cache.append( {
-    #         ("TP9", "DELTA"): 1
-    #     } )
-    #     df = data_record.get_dataframe()
-    #
-    # def get_dataframe(self):
-    #     raise Error
-    #
+
+        # # Data frame  Rows - Channels ; Columns - Metric
+        # multi_index = pd.MultiIndex.from_product(iterables=[
+        #         [c.name for c in utils.Channel],
+        #         [b.name for b in utils.Band]
+        #     ], names=["channel", "band"])
+        # df = pd.DataFrame(index=multi_index)
+
+    def get_dataframe(self):
+        raise NotImplementedError
+
     # def append_metrics(self, res):
     #
     #     self.data_record.cache.append(res)  # TODO: change to dataframe
-    #
 
-        # df = pd.DataFrame()
 
     def get_metrics(self, channel_index):
         """

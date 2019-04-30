@@ -89,6 +89,7 @@ class TestChannelDataProcessor(TestCase):
 
             # Record channel smooth band power
             csbp = c.get_channel_smooth_band_powers(i)
+            print(csbp)
 
             # Run calculations on csbp to obtain desired metrics
             alpha_metric = Metrics.alpha_beta_ratio(csbp, Band)
