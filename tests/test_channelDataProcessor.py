@@ -1,6 +1,7 @@
 from unittest import TestCase, skip
 import json
-from process_data import ChannelDataProcessor, Metrics
+from process import ChannelDataProcessor
+from metrics import Metrics
 import numpy as np
 
 
@@ -90,8 +91,8 @@ class TestChannelDataProcessor(TestCase):
             csbp = c.get_channel_smooth_band_powers(i)
 
             # Run calculations on csbp to obtain desired metrics
-            alpha_metric = Metrics.alpha_protocol(csbp, Band)
-            print("Alpha metric: {}".format(alpha_metric))
+            alpha_metric = Metrics.alpha_beta_ratio(csbp, Band)
+            print("alpha_beta_ratio: {}".format(alpha_metric))
 
             index_channel = [i]
             metrics[i] = alpha_metric
