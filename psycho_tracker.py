@@ -53,10 +53,8 @@ class Calibrator:
         self.inlet = inlet
         self.info = info
         self.threshold = None
-        #self.channelIndex = channel_index
 
 
-# we can use self.info instead
     def _record(self, info, inlet, d: DataRecord):
         """
 
@@ -65,11 +63,6 @@ class Calibrator:
         :param d: DataRecord object
         :return:
         """
-
-        ## Move to utils
-        def get_fs(_info):
-            return int(_info.nominal_srate())
-
         fs = get_fs(info)
 
         def _acquire_eeg_data(_inlet):
@@ -81,8 +74,7 @@ class Calibrator:
                 timeout=1, max_samples=int(SHIFT_LENGTH * fs))
             return _eeg_data, _timestamp
 
-        # The try/except structure allows to quit the while loop by aborting the
-        # script with <Ctrl-C>
+
         print('Press Ctrl-C in the console to break the while loop.')
 
         try:
@@ -102,19 +94,11 @@ class Calibrator:
 
                 c.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
 
-#                 multiIndex
 
                 for channel in range(NUM_CHANNELS):  # Iterate through all separate channels
 
                     # Record channel smooth band power
                     csbp = c.get_channel_smooth_band_powers(channel)
-
-                    #acquires power values for interative channel
-                       #metrics[channel][0:4] = csbp[0:4]
-
-                    # acquire ratio measures for channel
-
-                       #metrics[channel][4:] = Metrics.get_ratios(csbp, utils.Band)
 
                 d.matricies.append(metrics)
 
@@ -150,7 +134,6 @@ class Calibrator:
         self.currentStage = None
 
         data_record: DataRecord = self.data_records[(mode, stage)]
-
 
         m: MetricStats = data_record.get_metrics(channel_index=self.channelIndex)
 

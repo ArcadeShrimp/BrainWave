@@ -16,6 +16,7 @@ import numpy as np
 from sklearn import svm
 from scipy.signal import butter, lfilter, lfilter_zi
 
+from settings import *
 
 NOTCH_B, NOTCH_A = butter(4, np.array([55, 65]) / (256 / 2), btype='bandstop')
 
@@ -25,14 +26,18 @@ class Channel(Enum):
     FP2 = 2
     TP10 = 3
     DRL = 4
-    
-#chans = set("TP9", "TP10","FP1","FP2")
 
 class Band(Enum):
     DELTA = 0
     THETA = 1
     ALPHA = 2
     BETA = 3
+
+class Ratios(Enum):
+    AD = 0
+    AT = 1
+    AB = 2
+    BT = 3
 
 def epoch(data, samples_epoch, samples_overlap=0):
     """Extract epochs from a time series.
@@ -107,7 +112,7 @@ def compute_band_powers(eegdata, fs):
     ind_beta, = np.where((f >= 12) & (f < 30))
     meanBeta = np.mean(PSD[ind_beta, :], axis=0)
 
-#     print(meanDelta)
+
     feature_vector = np.concatenate((meanDelta, meanTheta, meanAlpha,
                                      meanBeta), axis=0)
 
@@ -115,6 +120,10 @@ def compute_band_powers(eegdata, fs):
 
     return feature_vector
 
+
+def get_fs(_info):
+    return int(_info.nominal_srate())
+    
 
 def nextpow2(i):
     """
@@ -168,7 +177,7 @@ def update_buffer(data_buffer, new_data, notch=False, filter_state=None):
     """
     if new_data.ndim == 1:
         new_data = new_data.reshape(-1, data_buffer.shape[1])
-    
+
     new_buffer = np.concatenate((data_buffer, new_data), axis=0)
     new_buffer = new_buffer[new_data.shape[0]:, :]
 
@@ -202,7 +211,7 @@ def create_filter_state():
     return filter_state
 
 
-def get_num_epoch(buffer_length, epoch_length, shift_length):
+def get_num_epoch(buffer_length=BUFFER_LENGTH, epoch_length=EPOCH_LENGTH, shift_length=SHIFT_LENGTH):
     """ Compute the number of epochs in "buffer_length"
 
     :param buffer_length:
