@@ -1,7 +1,8 @@
-import pandas as pd
+
 import utils
 import numpy as np  # Module that simplifies computations on matrices
-import pandas
+import metrics
+import pandas as pd
 from metrics import *
 import settings
 from data_record import *
@@ -31,6 +32,8 @@ class DataProcessor:
         self.fs = fs
         self.df = pd.DataFrame()
         self.data_record = DataRecord()
+
+        self.df = list()
 
     def feed_new_data(self, eeg_data=None):
         self._setup_buffers()
@@ -82,6 +85,14 @@ class DataProcessor:
         # Compute band powers
         band_powers = utils.compute_band_powers(data_epoch, self.fs)
         return band_powers
+
+
+    def get_dataframe(self):
+        raise NotImplementedError
+        # multi_index = pd.MultiIndex.from_arrays(arrays=[self.chans, self.bands], names=["channel", "band"])
+        # df = pd.DataFrame().set
+        # for p in self.df:
+
 
     def append_metrics(self):
         """
