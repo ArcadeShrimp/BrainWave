@@ -4,8 +4,23 @@ import numpy as np  # Module that simplifies computations on matrices
 import metrics
 import pandas as pd
 from metrics import *
+import itertools
 import settings
 from data_record import *
+
+
+def _get_dataframe(_df):
+    # p = list(itertools.product(
+    #         [c.name for c in utils.Channel],
+    #         [b.name for b in utils.Band]
+    # ))
+    # print(p)
+    # multi_index = pd.MultiIndex.from_tuples(
+    #     tuples=p,
+    #     names=["channel", "band"])
+    df = pd.DataFrame().from_dict(_df)
+    return df
+
 
 class DataProcessor:
     """ Records and holds data from inlet
@@ -86,13 +101,8 @@ class DataProcessor:
         band_powers = utils.compute_band_powers(data_epoch, self.fs)
         return band_powers
 
-
     def get_dataframe(self):
-        raise NotImplementedError
-        # multi_index = pd.MultiIndex.from_arrays(arrays=[self.chans, self.bands], names=["channel", "band"])
-        # df = pd.DataFrame().set
-        # for p in self.df:
-
+        return _get_dataframe(self.df)
 
     def append_metrics(self):
         """
