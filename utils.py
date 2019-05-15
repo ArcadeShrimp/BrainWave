@@ -39,6 +39,7 @@ class Ratios(Enum):
     AB = 2
     BT = 3
 
+
 def epoch(data, samples_epoch, samples_overlap=0):
     """Extract epochs from a time series.
     Given a 2D array of the shape [n_samples, n_channels]
@@ -123,7 +124,7 @@ def compute_band_powers(eegdata, fs):
 
 def get_fs(_info):
     return int(_info.nominal_srate())
-    
+
 
 def nextpow2(i):
     """
@@ -223,12 +224,27 @@ def get_num_epoch(buffer_length=BUFFER_LENGTH, epoch_length=EPOCH_LENGTH, shift_
                               shift_length + 1))
     return n_win_test
 
-def acquire_eeg_data(_inlet,fs):
+def acquire_eeg_data(_inlet, fs):
     """ Pull EEG data from inlet and return.
 
     :return: tuple: _eeg_data, _timestamp
     """
-    SHIFT_LENGTH = .2
     _eeg_data, _timestamp = _inlet.pull_chunk(
         timeout=1, max_samples=int(SHIFT_LENGTH * fs))
     return _eeg_data, _timestamp
+
+def aquire_and_append_metrics(inlet, fs, data_processor: DataProcessor):
+    """Get metrics from inlet and append to data processor
+
+    Parameters:
+    -----------
+
+    Returns:
+    --------
+    None: updates dataprocessor
+    """
+    # Obtain EEG data from the LSL stream
+    eeg_data, timestamp = utils.acquire_eeg_data(inlet, fs)
+
+    data_processor.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
+    data_processor.append_metrics()

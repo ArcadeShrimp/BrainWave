@@ -2,7 +2,7 @@
 ### Imports ###
 ###############
 
-# Allow Python 2 to run this code. 
+# Allow Python 2 to run this code.
 from __future__ import absolute_import, division
 
 # psychopy imports
@@ -17,6 +17,7 @@ import numpy as np  # whole numpy lib is available, prepend 'np.'
 from numpy import (sin, cos, tan, log, log10, pi, average,
                    sqrt, std, deg2rad, rad2deg, linspace, asarray)
 from numpy.random import random, randint, normal, shuffle
+from enum import Enum
 
 import os  # handy system and path functions
 import sys  # to get file system encoding
@@ -26,8 +27,21 @@ sys.path.append('../')
 import psycho_tracker
 
 # constants
+
 RELAX = 'relax'
 FOCUS = 'focus'
+MODES = {RELAX, FOCUS}
+
+NUM_STAGES = 3
+
+class Modes(Enum):
+    RELAX = 0
+    FOCUS = 1
+
+class Stages(Enum):
+    STAGE_1 = 0
+    STAGE_2 = 1
+    STAGE_3 = 2
 
 relax_images = ["./pics/landscape1.jpg", "./pics/landscape2.jpg", "./pics/landscape3.jpg"]
 rd.shuffle(relax_images)
@@ -287,7 +301,7 @@ def run_psychopy(cal: psycho_tracker.Calibrator):
     trialCounter = 0
     relaxTrialCounter = 0
     focusTrialCounter = 0
-    for thisTrial in range(3):
+    for stage in STAGES:
         trialCounter += 1
         # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
 #         if thisTrial != None:
@@ -347,7 +361,7 @@ def run_psychopy(cal: psycho_tracker.Calibrator):
                 thisComponent.status = NOT_STARTED
 
 
-        cal.start_stage(mode=RELAX, stage=trialCounter)
+        cal.start_stage(mode=0, stage=trialCounter)
         routineTimer.add(10.000000)
         continueRoutine = True
         # -------Start Routine "relax"-------
@@ -358,7 +372,7 @@ def run_psychopy(cal: psycho_tracker.Calibrator):
 
             # check for quit (typically the Esc key)
             if endExpNow or event.getKeys(keyList=["escape"]):
-                cal.end_stage(mode=RELAX, stage=trialCounter)
+                cal.end_stage(mode=0, stage=trialCounter)
                 win.close()
                 core.quit()
 
@@ -367,8 +381,8 @@ def run_psychopy(cal: psycho_tracker.Calibrator):
                 win.flip()
 
         relaxTrialCounter += 1
-        cal.end_stage(mode=RELAX, stage=trialCounter)
-        
+        cal.end_stage(mode=0, stage=trialCounter)
+
         # -------Ending Routine "relax"-------
         for thisComponent in relaxComponents:
             if hasattr(thisComponent, "setAutoDraw"):
@@ -400,7 +414,7 @@ def run_psychopy(cal: psycho_tracker.Calibrator):
             if endExpNow or event.getKeys(keyList=["escape"]):
                 win.close()
                 core.quit()
-                
+
 
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -426,7 +440,7 @@ def run_psychopy(cal: psycho_tracker.Calibrator):
             if hasattr(thisComponent, 'status'):
                 thisComponent.status = NOT_STARTED
 
-        cal.start_stage(mode=FOCUS, stage=trialCounter)
+        cal.start_stage(mode=1, stage=trialCounter)
         routineTimer.add(7.000000)
         continueRoutine = True
         # -------Start Routine "focus"-------
@@ -437,7 +451,7 @@ def run_psychopy(cal: psycho_tracker.Calibrator):
 
             # check for quit (typically the Esc key)
             if endExpNow or event.getKeys(keyList=["escape"]):
-                cal.end_stage(mode=RELAX, stage=trialCounter)
+                cal.end_stage(mode=0, stage=trialCounter)
                 win.close()
                 core.quit()
 
@@ -446,8 +460,8 @@ def run_psychopy(cal: psycho_tracker.Calibrator):
                 win.flip()
 
         focusTrialCounter += 1
-        cal.end_stage(mode=FOCUS, stage=trialCounter)
-        
+        cal.end_stage(mode=1, stage=trialCounter)
+
         # -------Ending Routine "focus"-------
         for thisComponent in focusComponents:
             if hasattr(thisComponent, "setAutoDraw"):
@@ -458,4 +472,3 @@ def run_psychopy(cal: psycho_tracker.Calibrator):
     thisExp.abort()  # or data files will save again on exit
     win.close()
     #core.quit()
-

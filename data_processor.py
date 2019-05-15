@@ -5,9 +5,7 @@ import metrics
 import pandas as pd
 from metrics import *
 import itertools
-import settings
-from data_record import *
-
+from settings import NUM_CHANNELS, BUFFER_LENGTH, EPOCH_LENGTH, OVERLAP_LENGTH, SHIFT_LENGTH
 
 def _get_dataframe(_df):
     # p = list(itertools.product(
@@ -46,9 +44,7 @@ class DataProcessor:
         self.filter_state = None
         self.fs = fs
         self.df = pd.DataFrame()
-        self.data_record = DataRecord()
 
-        self.df = list()
 
     def feed_new_data(self, eeg_data=None):
         self._setup_buffers()
@@ -131,3 +127,8 @@ class DataProcessor:
             ratios_measures = Metrics.get_ratios(csbp)
             for ratio in utils.Ratios:
                 res[(channel.name, ratio.name)] = ratios_measures[ratio.value]
+
+        self.df.append(res)
+
+    def get_recent_slice():
+        return self.df.tail(1)
