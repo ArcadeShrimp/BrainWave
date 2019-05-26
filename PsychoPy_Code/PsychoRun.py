@@ -24,7 +24,7 @@ import sys  # to get file system encoding
 
 sys.path.append('../')
 
-import psycho_tracker
+import calibrator
 
 # constants
 
@@ -53,7 +53,7 @@ _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 
 
-def run_psychopy(cal: psycho_tracker.Calibrator):
+def run_psychopy(cal):#cal: calibrator.Calibrator):
 
     #################
     ### Start Box ###

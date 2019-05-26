@@ -68,7 +68,7 @@ class Calibrator:
 
         try:
             # The following loop acquires data, computes band powers, and calculates neurofeedback metrics based on those band powers
-            while self.keepRecording
+            while self.keepRecording:
                 utils.aquire_and_append_metrics(inlet, fs, dp)
 
         except KeyboardInterrupt:
@@ -107,7 +107,7 @@ class Calibrator:
         pass
 
 
-""" NOT donE YETS """
+    """ NOT donE YETS """
     def _trainMetrics() :
         X = np.array()
         Y = np.array()
@@ -123,16 +123,15 @@ class Calibrator:
                 else :
                     Y.append(np.zeros(df.shape[0]))
 
-
-
-
-        X_train = self.data_processors[to_numpy
+        #X_train = self.data_processors[to_numpy
 
 
     def predictMetrics(dp: DataProcessor) :
         """
-            Returns a number 0 to 1 with the probability of the input dp
-            being a "wave" output.
+        Returns a number 0 to 1 with the probability of the input dp
+        being a "wave" output.
 
-            :param dp: DataProcessor with the data collected from the subjec
+
+        :param dp: DataProcessor with the data collected from the subjec
         """
+        pass
