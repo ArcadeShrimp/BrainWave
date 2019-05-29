@@ -1,7 +1,8 @@
 from unittest import TestCase, skip
 import json
-from process import ChannelDataProcessor
-from data_processor import _get_dataframe
+# from process import ChannelDataProcessor
+import utils
+from data_processor import _get_dataframe, _get_hist, DataProcessor
 from metrics import Metrics
 import numpy as np
 
@@ -10,6 +11,38 @@ class TestChannelDataProcessor(TestCase):
     """
         TODO: implement
     """
+
+    def test_specgram_ctx(self):
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        # Fixing random state for reproducibility
+        np.random.seed(19680801)
+
+        dt = 0.0005
+        t = np.arange(0.0, 20.0, dt)
+        s1 = np.sin(2 * np.pi * 100 * t)
+        s2 = 2 * np.sin(2 * np.pi * 400 * t)
+
+        # create a transient "chirp"
+        s2[t <= 10] = s2[12 <= t] = 0
+
+        # add some noise into the mix
+        nse = 0.01 * np.random.random(size=len(t))
+
+        x = s1 + s2 + nse  # the signal
+        NFFT = 1024  # the length of the windowing segments
+        Fs = int(1.0 / dt)  # the sampling frequency
+        print(x)
+        fig, (ax1, ax2) = plt.subplots(nrows=2)
+        ax1.plot(t, x)
+        Pxx, freqs, bins, im = ax2.specgram(x, NFFT=NFFT, Fs=Fs, noverlap=900)
+        # The `specgram` method returns 4 objects. They are:
+        # - Pxx: the periodogram
+        # - freqs: the frequency vector
+        # - bins: the centers of the time bins
+        # - im: the matplotlib.image.AxesImage instance representing the data in the plot
+        plt.show()
 
     @skip("Test not implemented")
     def test_feed_new_data(self):
@@ -72,6 +105,60 @@ class TestChannelDataProcessor(TestCase):
         print(df)
         print(df.keys())
         print(df.get( ('FP1', 'THETA') ))
+
+    def test_specgram(self):
+        def get_fs(_info):
+            return int(_info.nominal_srate())
+
+        def get_fs_mock():
+            return 256  # For testing purposes
+
+        fs = get_fs_mock()
+
+        def _acquire_eeg_data_mock():
+            """ Get eeg_data and timestamp from json for testing purposes.
+
+            :return: tuple: _eeg_data, _timestamp
+            """
+            json_file = open("../to_send.json")
+            k = json.loads(json_file.read())
+            _eeg_data = k[0]["eeg_data"]
+            _timestamp = k[0]["timestamp"]
+            return _eeg_data, _timestamp
+
+            # Obtain EEG data from the LSL stream
+            # eeg_data, timestamp = _acquire_eeg_data(inlet)
+
+        eeg_data, timestamp = _acquire_eeg_data_mock()
+        data_epoch = np.load("data_epoch")
+
+        _get_hist(data_epoch, fs)
+
+
+    def test_new_data_processor(self):
+
+        def get_fs_mock():
+            return 256  # For testing purposes
+
+        fs = get_fs_mock()
+
+        json_file = open("../to_send.json")
+        k = json.loads(json_file.read())
+
+
+            # Obtain EEG data from the LSL stream
+            # eeg_data, timestamp = _acquire_eeg_data(inlet)
+
+        dp = DataProcessor(fs=fs)
+
+        for i in range(len(k)):
+
+            _eeg_data = k[i]["eeg_data"]
+            _timestamp = k[i]["timestamp"]
+
+            dp.feed_new_data(eeg_data=_eeg_data)
+            dp.append_metrics()
+            dp.refresh_specgram()
 
 
     def test_all(self):

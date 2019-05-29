@@ -16,6 +16,24 @@ from data_processor import DataProcessor
 from settings import NUM_CHANNELS, BUFFER_LENGTH, EPOCH_LENGTH, OVERLAP_LENGTH, SHIFT_LENGTH
 from PsychoPy_Code.PsychoRun import Modes, Stages
 
+
+def aquire_and_append_metrics(inlet, fs, data_processor: DataProcessor):
+    """Get metrics from inlet and append to data processor
+
+    Parameters:
+    -----------
+
+    Returns:
+    --------
+    None: updates dataprocessor
+    """
+    # Obtain EEG data from the LSL stream
+    eeg_data, timestamp = utils.acquire_eeg_data(inlet, fs)
+
+    data_processor.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
+    data_processor.append_metrics()
+
+
 class Calibrator:
     """
     Tracks PsychoPy Calibration and MuseLsL Data
@@ -69,7 +87,7 @@ class Calibrator:
         try:
             # The following loop acquires data, computes band powers, and calculates neurofeedback metrics based on those band powers
             while self.keepRecording:
-                utils.aquire_and_append_metrics(inlet, fs, dp)
+                aquire_and_append_metrics(inlet, fs, dp)
 
         except KeyboardInterrupt:
             print('Closing!')

@@ -17,7 +17,7 @@ from sklearn import svm
 from scipy.signal import butter, lfilter, lfilter_zi
 
 from settings import *
-from data_processor import DataProcessor
+# from data_processor import DataProcessor
 
 
 NOTCH_B, NOTCH_A = butter(4, np.array([55, 65]) / (256 / 2), btype='bandstop')
@@ -240,18 +240,4 @@ def acquire_eeg_data(_inlet, fs):
         timeout=1, max_samples=int(SHIFT_LENGTH * fs))
     return _eeg_data, _timestamp
 
-def aquire_and_append_metrics(inlet, fs, data_processor: DataProcessor):
-    """Get metrics from inlet and append to data processor
 
-    Parameters:
-    -----------
-
-    Returns:
-    --------
-    None: updates dataprocessor
-    """
-    # Obtain EEG data from the LSL stream
-    eeg_data, timestamp = acquire_eeg_data(inlet, fs)
-
-    data_processor.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
-    data_processor.append_metrics()
