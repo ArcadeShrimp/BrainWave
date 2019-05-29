@@ -25,7 +25,7 @@ class Buffer:
         self.inlet = inlet
         self.fs = fs
 
-    def compute_bandpowers (self, eegdata) :
+    def _compute_bandpowers (self, eegdata) :
         deltaFreq = (2, 4)
         thetaFreq = (4, 8)
         alphaFreq = (8, 12)

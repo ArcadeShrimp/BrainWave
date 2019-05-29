@@ -3,7 +3,7 @@
 from multiprocessing import Process
 import threading
 import time
-
+import buffer
 from muselsl import *
 import numpy as np
 from pylsl import StreamInlet, resolve_byprop
@@ -30,7 +30,7 @@ class Calibrator:
 
     """
 
-    def __init__(self, inlet, info):
+    def __init__(self, buff, info):
         """
         Initialize with inlet.
         :param inlet:
@@ -46,14 +46,14 @@ class Calibrator:
         # to hold the process that will do the recording
         self.recordingProcess = None
 
-        self.inlet = inlet
+        self.buff = buff
         self.info = info
-        self.data_processors = dict()
+        self.data_frame = dict()
         self.weights = None
         self.bias = None
 
 
-    def _record(self, inlet, dp: DataProcessor):
+    def _record(self, df):
         """
             Records data into the provided DataProcessor if self.keepRecording
 
@@ -69,7 +69,9 @@ class Calibrator:
         try:
             # The following loop acquires data, computes band powers, and calculates neurofeedback metrics based on those band powers
             while self.keepRecording:
-                utils.aquire_and_append_metrics(inlet, fs, dp)
+                self.buff.update_buffer_with_next_chunk() 
+                nextData = self.buff.get_band_buffer_average()
+                df.append(nextData)
 
         except KeyboardInterrupt:
             print('Closing!')
