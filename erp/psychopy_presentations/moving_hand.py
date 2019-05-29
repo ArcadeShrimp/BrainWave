@@ -31,12 +31,11 @@ def present(duration=120):
                             timestamp=np.zeros(n_trials)))
 
     # graphics
-    mywin = visual.Window([1920, 1080], monitor="testMonitor", units="deg",
+    mywin = visual.Window([1920, 1080], monitor="InternalMonitor", units="cm",
                           fullscr=True)
-    grating = visual.GratingStim(win=mywin, mask='circle', size=20, sf=2)
-    fixation = visual.GratingStim(win=mywin, size=0.2, pos=[0, 0], sf=0,
-                                  rgb=[1, 0, 0])
-
+    go = visual.ImageStim(win=mywin, image='go.png', mask=None, units='', pos=(0.0, 0.0),                   size=0.2)
+    no_go = visual.ImageStim(win=mywin, image='go.png', mask=None, units='', pos=(0.0, 0.0),                 size=0.2)
+    
     for ii, trial in trials.iterrows():
         # inter trial interval
         core.wait(iti + np.random.rand() * jitter)
