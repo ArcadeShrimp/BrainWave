@@ -4,62 +4,59 @@ from psychopy import visual, core, event
 from time import time, strftime, gmtime
 from optparse import OptionParser
 from pylsl import StreamInfo, StreamOutlet
+import os
 
 
 def present(duration=120):
-
-    # create
-    info = StreamInfo('Markers', 'Markers', 1, 0, 'int32', 'myuidw43536')
-
-    # next make an outlet
-    outlet = StreamOutlet(info)
-
-    markernames = [1, 2]
-
-    start = time()
-
-    n_trials = 2010
-    iti = .4
-    soa = 0.3
-    jitter = 0.2
-    record_duration = np.float32(duration)
-
-    # Setup log
-    position = np.random.binomial(1, 0.15, n_trials)
-
-    trials = DataFrame(dict(position=position,
-                            timestamp=np.zeros(n_trials)))
-
-    # graphics
-    mywin = visual.Window([1920, 1080], monitor="InternalMonitor", units="cm",
-                          fullscr=True)
-    go = visual.ImageStim(win=mywin, image='go.png', mask=None, units='', pos=(0.0, 0.0),                   size=0.2)
-    no_go = visual.ImageStim(win=mywin, image='go.png', mask=None, units='', pos=(0.0, 0.0),                 size=0.2)
     
-    for ii, trial in trials.iterrows():
-        # inter trial interval
-        core.wait(iti + np.random.rand() * jitter)
+    # setup streams
+    info = StreamInfo('Markers', 'Markers', 1, 0, 'int32', 'moving_hand_present')
+    outlet = StreamOutlet(info)
+    
+    start = time()
+    record_duration = np.float32(duration)
+    
+    # define presentation variables
+    num_trials = 200
+    go_time = 5
+    stop_time = 1
+    wait_times = np.random.normal(2, 0.5, num_trials)
+    
+    # Ensure that relative paths start from the same directory as this script
+    _thisDir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(_thisDir)
+    
+    # create graphic objects
+    window = visual.Window(fullscr = True)
+    go_image = visual.ImageStim(win = window, image = './go.png')
+    stop_image = visual.ImageStim(win = window, image = './stop.jpg')
+    
+    for wait_time in wait_times:
+        core.wait(wait_time)
 
-        # onset
-        grating.phase += np.random.rand()
-        pos = trials['position'].iloc[ii]
-        grating.ori = 90 * pos
-        grating.draw()
-        fixation.draw()
+        # display the go image
+        go_image.draw()
         timestamp = time()
-        outlet.push_sample([markernames[pos]], timestamp)
-        mywin.flip()
-
-        # offset
-        core.wait(soa)
-        fixation.draw()
-        mywin.flip()
+        outlet.push_sample([1], timestamp)
+        window.flip()
+        core.wait(go_time)
+        
+        # display the stop image
+        stop_image.draw()
+        window.flip()
+        core.wait(stop_time)
+       
+        # display a blank screen
+        window.flip()
+        
+        # checks if the presentation duration is up
         if len(event.getKeys()) > 0 or (time() - start) > record_duration:
             break
         event.clearEvents()
-    # Cleanup
-    mywin.close()
-
+        
+    # cleanup -- close window after the presentation
+    window.close()
+    
 
 def main():
     parser = OptionParser()
