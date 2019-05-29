@@ -128,7 +128,8 @@ class DataProcessor:
             for ratio in utils.Ratios:
                 res[(channel.name, ratio.name)] = ratios_measures[ratio.value]
 
-        self.df.append(res)
+            
+        self.df = self.df.append(res,ignore_index=True)
 
-    def get_recent_slice():
-        return self.df.tail(1)
+    def get_recent_slice(self):
+        return self.df.tail()

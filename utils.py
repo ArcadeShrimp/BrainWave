@@ -182,11 +182,11 @@ def update_buffer(data_buffer, new_data, notch=False, filter_state=None):
         new_data = new_data.reshape(-1, data_buffer.shape[1])
 
 
-    print("data buffer: " + str(data_buffer) + " shape " + str(data_buffer.shape))
-    print("new data: " + str(new_data) + " shape " + str(new_data.shape))
+    #print("data buffer: " + str(data_buffer) + " shape " + str(data_buffer.shape))
+    #print("new data: " + str(new_data) + " shape " + str(new_data.shape))
     new_buffer = np.concatenate((data_buffer, new_data), axis=0)
     new_buffer = new_buffer[new_data.shape[0]:, :]
-    print("new buffer: " + str(new_buffer) + " shape " + str(new_buffer.shape))
+    #print("new buffer: " + str(new_buffer) + " shape " + str(new_buffer.shape))
 
 
     return new_buffer, filter_state

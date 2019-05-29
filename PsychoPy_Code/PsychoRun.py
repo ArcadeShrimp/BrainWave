@@ -301,7 +301,7 @@ def run_psychopy(cal):#cal: calibrator.Calibrator):
     trialCounter = 0
     relaxTrialCounter = 0
     focusTrialCounter = 0
-    for stage in STAGES:
+    for stage in Stages:
         trialCounter += 1
         # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
 #         if thisTrial != None:
