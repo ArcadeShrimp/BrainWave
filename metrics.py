@@ -1,5 +1,5 @@
 """ The metrics used to analyze neural data"""
-from utils import *
+import utils
 
 class Metrics:
     """
@@ -16,8 +16,8 @@ class Metrics:
         :param band_cls:
         :return:
         """
-        a_d_metric = smooth_band_powers[Band.ALPHA.value] / \
-                       smooth_band_powers[Band.DELTA.value]
+        a_d_metric = smooth_band_powers[utils.Band.ALPHA.value] / \
+                       smooth_band_powers[utils.Band.DELTA.value]
 
         return a_d_metric
 
@@ -30,8 +30,8 @@ class Metrics:
         :param band_cls:
         :return:
         """
-        a_t_metric = smooth_band_powers[Band.ALPHA.value] / \
-                       smooth_band_powers[Band.THETA.value]
+        a_t_metric = smooth_band_powers[utils.Band.ALPHA.value] / \
+                       smooth_band_powers[utils.Band.THETA.value]
 
         return a_t_metric
 
@@ -44,8 +44,8 @@ class Metrics:
         :param band_cls:
         :return:
         """
-        a_b_metric = smooth_band_powers[Band.ALPHA.value] / \
-                       smooth_band_powers[Band.BETA.value]
+        a_b_metric = smooth_band_powers[utils.Band.ALPHA.value] / \
+                       smooth_band_powers[utils.Band.BETA.value]
 
         return a_b_metric
 
@@ -58,7 +58,7 @@ class Metrics:
         :param band_cls:
         :return:
         """
-        beta_metric = smooth_band_powers[Band.BETA.value]/smooth_band_powers[Band.THETA.value]
+        beta_metric = smooth_band_powers[utils.Band.BETA.value]/smooth_band_powers[utils.Band.THETA.value]
 
         return beta_metric
 

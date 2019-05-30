@@ -17,6 +17,8 @@ from sklearn import svm
 from scipy.signal import butter, lfilter, lfilter_zi
 
 from settings import *
+from data_processor import DataProcessor
+
 
 NOTCH_B, NOTCH_A = butter(4, np.array([55, 65]) / (256 / 2), btype='bandstop')
 
@@ -38,6 +40,7 @@ class Ratios(Enum):
     AT = 1
     AB = 2
     BT = 3
+
 
 def epoch(data, samples_epoch, samples_overlap=0):
     """Extract epochs from a time series.
@@ -123,7 +126,7 @@ def compute_band_powers(eegdata, fs):
 
 def get_fs(_info):
     return int(_info.nominal_srate())
-    
+
 
 def nextpow2(i):
     """
@@ -178,8 +181,13 @@ def update_buffer(data_buffer, new_data, notch=False, filter_state=None):
     if new_data.ndim == 1:
         new_data = new_data.reshape(-1, data_buffer.shape[1])
 
+
+    #print("data buffer: " + str(data_buffer) + " shape " + str(data_buffer.shape))
+    #print("new data: " + str(new_data) + " shape " + str(new_data.shape))
     new_buffer = np.concatenate((data_buffer, new_data), axis=0)
     new_buffer = new_buffer[new_data.shape[0]:, :]
+    #print("new buffer: " + str(new_buffer) + " shape " + str(new_buffer.shape))
+
 
     return new_buffer, filter_state
 
@@ -219,16 +227,31 @@ def get_num_epoch(buffer_length=BUFFER_LENGTH, epoch_length=EPOCH_LENGTH, shift_
     :param shift_length:
     :return:
     """
-    n_win_test = int(np.floor((buffer_length - epoch_length) /
-                              shift_length + 1))
+    n_win_test = int(np.floor((buffer_length - epoch_length)*(epoch_length/shift_length)))
+    ###TESTING^^^^ n_win_test = int(np.floor((buffer_length - epoch_length) /shift_length + 1))
     return n_win_test
 
-def acquire_eeg_data(_inlet,fs):
+def acquire_eeg_data(_inlet, fs):
     """ Pull EEG data from inlet and return.
 
     :return: tuple: _eeg_data, _timestamp
     """
-    SHIFT_LENGTH = .2
     _eeg_data, _timestamp = _inlet.pull_chunk(
         timeout=1, max_samples=int(SHIFT_LENGTH * fs))
     return _eeg_data, _timestamp
+
+def aquire_and_append_metrics(inlet, fs, data_processor: DataProcessor):
+    """Get metrics from inlet and append to data processor
+
+    Parameters:
+    -----------
+
+    Returns:
+    --------
+    None: updates dataprocessor
+    """
+    # Obtain EEG data from the LSL stream
+    eeg_data, timestamp = acquire_eeg_data(inlet, fs)
+
+    data_processor.feed_new_data(eeg_data=eeg_data)  # Feed new data generated in the epoch
+    data_processor.append_metrics()

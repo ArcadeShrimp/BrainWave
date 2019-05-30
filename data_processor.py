@@ -1,10 +1,24 @@
-import pandas as pd
+
 import utils
 import numpy as np  # Module that simplifies computations on matrices
-import pandas
+import metrics
+import pandas as pd
 from metrics import *
-import settings
-from data_record import *
+import itertools
+from settings import NUM_CHANNELS, BUFFER_LENGTH, EPOCH_LENGTH, OVERLAP_LENGTH, SHIFT_LENGTH
+
+def _get_dataframe(_df):
+    # p = list(itertools.product(
+    #         [c.name for c in utils.Channel],
+    #         [b.name for b in utils.Band]
+    # ))
+    # print(p)
+    # multi_index = pd.MultiIndex.from_tuples(
+    #     tuples=p,
+    #     names=["channel", "band"])
+    df = pd.DataFrame().from_dict(_df)
+    return df
+
 
 class DataProcessor:
     """ Records and holds data from inlet
@@ -30,7 +44,7 @@ class DataProcessor:
         self.filter_state = None
         self.fs = fs
         self.df = pd.DataFrame()
-        self.data_record = DataRecord()
+
 
     def feed_new_data(self, eeg_data=None):
         self._setup_buffers()
@@ -83,6 +97,9 @@ class DataProcessor:
         band_powers = utils.compute_band_powers(data_epoch, self.fs)
         return band_powers
 
+    def get_dataframe(self):
+        return _get_dataframe(self.df)
+
     def append_metrics(self):
         """
 
@@ -110,3 +127,9 @@ class DataProcessor:
             ratios_measures = Metrics.get_ratios(csbp)
             for ratio in utils.Ratios:
                 res[(channel.name, ratio.name)] = ratios_measures[ratio.value]
+
+            
+        self.df = self.df.append(res,ignore_index=True)
+
+    def get_recent_slice(self):
+        return self.df.tail()

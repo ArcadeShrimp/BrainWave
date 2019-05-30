@@ -1,7 +1,8 @@
 """ Hold constants and settings used throughout project"""
 
-# Channels we use from Muse, 
-NUM_CHANNELS = 4
+# Channels we use from Muse,
+# Maybe come back to this
+NUM_CHANNELS = 5
 
 # Length of the EEG data buffer (in seconds)
 # This buffer will hold last n seconds of data and be used for calculations
