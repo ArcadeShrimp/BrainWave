@@ -50,17 +50,18 @@ class ChannelDataProcessor:
 
     """
 
-    def __init__(self, buffer_length=5, epoch_length=1, overlap_length=0.8, shift_length=None, fs=None, band_cls=None):
-        """
+    def __init__(self, buffer_length=5, epoch_length=1, overlap_length=0.8, 
+                 shift_length=None, fs=None, band_cls=None):
+        '''
 
-        :param buffer_length: Length of the EEG data buffer (in seconds)
-             This buffer will hold last n seconds of data and be used for calculations
-        :param epoch_length: Length of the epochs used to compute the FFT (in seconds)
-        :param overlap_length: Amount of overlap between two consecutive epochs (in seconds)
-        :param fs: Amount to 'shift' the start of each next consecutive epoch
-        :param shift_length: Amount to 'shift' the start of each next consecutive epoch
-        :param band_cls: enum to store Band -> Number
-        """
+            :param buffer_length: Length of the EEG data buffer (in seconds)
+                 This buffer will hold last n seconds of data and be used for calculations
+            :param epoch_length: Length of the epochs used to compute the FFT (in seconds)
+            :param overlap_length: Amount of overlap between two consecutive epochs (in seconds)
+            :param fs: Amount to 'shift' the start of each next consecutive epoch
+            :param shift_length: Amount to 'shift' the start of each next consecutive epoch
+            :param band_cls: enum to store Band -> Number
+        '''
         assert shift_length is not None
         self.shift_length = shift_length
         self.buffer_length = buffer_length
@@ -82,19 +83,25 @@ class ChannelDataProcessor:
         self.band_cls = band_cls  # To store Band -> Number
 
     def feed_new_data(self, eeg_data=None):
+        '''
+            Sets the eeg data of this processor if not None. 
+        '''
         self._setup_buffers()
         assert eeg_data is not None  # Check that eeg_data is passed in
         self.eeg_data = eeg_data
 
     def _setup_buffers(self):
-        """ Set up buffers shared by all channels
-        :return:
-        """
+        '''
+            Sets up buffers shared by all channels
+        '''
 
         self.eeg_buffer = utils.create_eeg_buffer(fs=self.fs, buffer_length=self.buffer_length)
         self.filter_state = utils.create_filter_state()
 
     def _retrieve_channel_data(self, eeg_data, index_channel):
+        '''
+            Retrieves the new channel data of the same size as eeg_data for a given index
+        '''
 
         # Only keep the channel we're interested in
         ch_data = np.array(eeg_data)[:, index_channel]
@@ -106,21 +113,23 @@ class ChannelDataProcessor:
         return new_eeg_buffer, new_filter_state
 
     def _get_data_epoch(self, eeg_buffer):
-        """ Get newest samples from the buffer
+        '''
+            Get newest samples from the buffer
 
-        :param eeg_buffer:
-        :return:
-        """
+            :param eeg_buffer: the original eeg_buffer
+            :return data_epoch: of size epoch_length * fs
+        '''
         data_epoch = utils.get_last_data(eeg_buffer,
                                          self.epoch_length * self.fs)
         return data_epoch
 
     def get_smooth_band_powers(self,band_buffer):
-        """
-
-        :param band_buffer:
-        :return:
-        """
+        '''
+            Calculates and returns the average band powers over all epochs in buffer.
+            
+            :param band_buffer: The original band_buffer with metrics split into epochs.
+            :return: smooth_band_powers
+        '''
 
         # Compute the average band powers for all epochs in buffer
         # This helps to smooth out noise
@@ -128,11 +137,11 @@ class ChannelDataProcessor:
         return smooth_band_powers
     
     def get_channel_smooth_band_powers(self, index_channel):
-        """
-
-        :param index_channel: the channel to work on. Example: [0]
-        :return: smooth_band_powers
-        """
+        '''
+            Gets the smooth band powers given the index channel. 
+            :param index_channel: the channel to work on. Example: [0]
+            :return: smooth_band_powers
+        ''' 
 
 # make method later
         # Get eeg_buffer and filter_state for this channel
