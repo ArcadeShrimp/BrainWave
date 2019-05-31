@@ -32,7 +32,7 @@ RELAX = 'relax'
 FOCUS = 'focus'
 MODES = {RELAX, FOCUS}
 
-NUM_STAGES = 3
+NUM_STAGES = 1
 
 class Modes(Enum):
     RELAX = 0
@@ -40,8 +40,8 @@ class Modes(Enum):
 
 class Stages(Enum):
     STAGE_1 = 0
-    STAGE_2 = 1
-    STAGE_3 = 2
+    #STAGE_2 = 1
+    #STAGE_3 = 2
 
 relax_images = ["./pics/landscape1.jpg", "./pics/landscape2.jpg", "./pics/landscape3.jpg"]
 rd.shuffle(relax_images)
@@ -302,7 +302,7 @@ def run_psychopy(cal):#cal: calibrator.Calibrator):
     relaxTrialCounter = 0
     focusTrialCounter = 0
     for stage in Stages:
-        trialCounter += 1
+
         # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
 #         if thisTrial != None:
 #             for paramName in thisTrial:
@@ -466,7 +466,7 @@ def run_psychopy(cal):#cal: calibrator.Calibrator):
         for thisComponent in focusComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
-
+        trialCounter += 1
     logging.flush()
     # make sure everything is closed down
     thisExp.abort()  # or data files will save again on exit

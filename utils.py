@@ -41,6 +41,9 @@ class Ratios(Enum):
     AB = 2
     BT = 3
 
+class Modes(Enum):
+    RELAX = 0
+    FOCUS = 1
 
 def epoch(data, samples_epoch, samples_overlap=0):
     """Extract epochs from a time series.
